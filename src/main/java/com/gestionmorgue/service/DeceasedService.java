@@ -1,5 +1,6 @@
 package com.gestionmorgue.service;
 
+import com.gestionmorgue.config.ConfigService;
 import com.gestionmorgue.dao.DeceasedDao;
 import com.gestionmorgue.model.Deceased;
 
@@ -31,9 +32,10 @@ public class DeceasedService {
     }
 
     private String generateDossierNumber() {
+        String prefix = ConfigService.getInstance().getDossierPrefix();
         String year = String.valueOf(java.time.Year.now().getValue());
         String number = String.format("%04d", dossierCounter++);
-        return "DOS-" + year + "-" + number;
+        return prefix + "-" + year + "-" + number;
     }
 
     public List<Deceased> search(String lastName, String firstName, String dossierNumber) {

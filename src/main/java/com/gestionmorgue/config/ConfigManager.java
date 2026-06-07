@@ -47,16 +47,17 @@ public class ConfigManager {
         return config.containsKey(key) ? Boolean.parseBoolean(config.get(key).toString()) : defaultValue;
     }
 
+    public int getInt(String key, int defaultValue) {
+        if (config.containsKey(key)) {
+            Object val = config.get(key);
+            if (val instanceof Number) return ((Number) val).intValue();
+            try { return Integer.parseInt(val.toString()); } catch (NumberFormatException e) { return defaultValue; }
+        }
+        return defaultValue;
+    }
+
     public void set(String key, Object value) {
         config.put(key, value);
         save();
-    }
-
-    public boolean isUpdateCheckEnabled() {
-        return getBoolean("update_check_enabled", true);
-    }
-
-    public void setUpdateCheckEnabled(boolean enabled) {
-        set("update_check_enabled", enabled);
     }
 }

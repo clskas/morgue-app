@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.SettingsController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <Text styleClass="content-title" text="Paramètres" />
+
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+        <VBox spacing="20">
+
+            <VBox spacing="10">
+                <Label styleClass="section-title" text="Hôpital" />
+                <GridPane hgap="10" vgap="8">
+                    <Label text="Nom de l'hôpital" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="hospitalNameField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label text="Adresse" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="hospitalAddressField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Téléphone" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="hospitalPhoneField" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="Logo" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <TextField fx:id="logoPathField" prefWidth="220" editable="false" />
+                        <Button onAction="#handleChooseLogo" text="Parcourir..." />
+                        <Button onAction="#handleClearLogo" text="Effacer" />
+                    </HBox>
+                </GridPane>
+            </VBox>
+
+            <VBox spacing="10">
+                <Label styleClass="section-title" text="Numérotation" />
+                <GridPane hgap="10" vgap="8">
+                    <Label text="Préfixe dossier" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="dossierPrefixField" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                </GridPane>
+            </VBox>
+
+            <VBox spacing="10">
+                <Label styleClass="section-title" text="Affichage" />
+                <GridPane hgap="10" vgap="8">
+                    <Label text="Langue" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <ComboBox fx:id="langSelector" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label text="Taille de police" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Slider fx:id="fontSizeSlider" min="10" max="20" value="13" showTickLabels="true" showTickMarks="true" prefWidth="200" />
+                        <Label fx:id="fontSizeLabel" text="13px" />
+                    </HBox>
+                </GridPane>
+            </VBox>
+
+            <HBox spacing="10">
+                <Button onAction="#handleSave" styleClass="btn-primary" text="Enregistrer" />
+                <Button onAction="#handleReset" text="Réinitialiser" />
+            </HBox>
+
+            <Label fx:id="statusLabel" style="-fx-text-fill: green;" />
+        </VBox>
+    </ScrollPane>
+</VBox>

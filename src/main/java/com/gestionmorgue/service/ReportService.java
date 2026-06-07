@@ -2,6 +2,7 @@ package com.gestionmorgue.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.gestionmorgue.config.ConfigService;
 import com.gestionmorgue.model.*;
 import com.gestionmorgue.util.DatabaseManager;
 import com.lowagie.text.*;
@@ -197,11 +198,35 @@ public class ReportService {
         PdfWriter.getInstance(document, new FileOutputStream(path));
         document.open();
 
+        ConfigService cfg = ConfigService.getInstance();
+        String hospitalName = cfg.getHospitalName();
+        String hospitalInfo = hospitalName.isEmpty() ? "" : hospitalName;
+        String addr = cfg.getHospitalAddress();
+        if (!addr.isEmpty()) hospitalInfo += (hospitalInfo.isEmpty() ? "" : "  |  ") + addr;
+        String phone = cfg.getHospitalPhone();
+        if (!phone.isEmpty()) hospitalInfo += "  |  Tél: " + phone;
+
+        String logoPath = cfg.getHospitalLogoPath();
+        if (!logoPath.isEmpty()) {
+            try {
+                com.lowagie.text.Image img = com.lowagie.text.Image.getInstance(logoPath);
+                img.scaleToFit(120, 60);
+                document.add(img);
+            } catch (Exception ignored) {}
+        }
+
         com.lowagie.text.Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, new java.awt.Color(26, 35, 126));
         com.lowagie.text.Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
         com.lowagie.text.Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
 
-        document.add(new Paragraph("Rapport d'activité - Gestion Morgue", titleFont));
+        String title = "Rapport d'activité";
+        if (!hospitalName.isEmpty()) title += " - " + hospitalName;
+        else title += " - Gestion Morgue";
+        document.add(new Paragraph(title, titleFont));
+        if (!hospitalInfo.isEmpty()) {
+            document.add(new Paragraph(hospitalInfo,
+                    FontFactory.getFont(FontFactory.HELVETICA, 9, new java.awt.Color(100, 100, 100))));
+        }
         document.add(new Paragraph("Généré le " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
                 FontFactory.getFont(FontFactory.HELVETICA, 10, new java.awt.Color(100, 100, 100))));
         document.add(Chunk.NEWLINE);

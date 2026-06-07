@@ -44,6 +44,7 @@
             <Button fx:id="navUsers" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleUsers" styleClass="sidebar-button" text="_Utilisateurs" />
             <Button fx:id="navFamily" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleFamilyContacts" styleClass="sidebar-button" text="_Familles" />
             <Button fx:id="navTheme" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleThemeCreator" styleClass="sidebar-button" text="_Thème" />
+            <Button fx:id="navSettings" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleSettings" styleClass="sidebar-button" text="P_aramètres" />
         </VBox>
     </left>
 

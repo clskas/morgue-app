@@ -68,6 +68,7 @@ public class DashboardController {
     @FXML private Button navUsers;
     @FXML private Button navFamily;
     @FXML private Button navTheme;
+    @FXML private Button navSettings;
 
     private ReportService reportService;
     private AuditService auditService;
@@ -146,6 +147,8 @@ public class DashboardController {
         navFamily.setManaged(navFamily.isVisible());
         navTheme.setVisible("ADMIN".equals(role));
         navTheme.setManaged(navTheme.isVisible());
+        navSettings.setVisible("ADMIN".equals(role));
+        navSettings.setManaged(navSettings.isVisible());
         themeCreatorButton.setVisible("ADMIN".equals(role));
         themeCreatorButton.setManaged(themeCreatorButton.isVisible());
     }
@@ -168,6 +171,11 @@ public class DashboardController {
     @FXML
     private void handleThemeCreator() {
         loadView("/views/theme.fxml");
+    }
+
+    @FXML
+    private void handleSettings() {
+        loadView("/views/settings.fxml");
     }
 
     @FXML
