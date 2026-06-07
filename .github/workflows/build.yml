@@ -45,6 +45,16 @@ jobs:
         name: jacoco-report
         path: target/site/jacoco/
 
+    - name: Generate Javadoc
+      run: mvn javadoc:javadoc -DskipTests
+
+    - name: Upload Javadoc
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: javadoc
+        path: target/site/apidocs/
+
     - name: Upload SpotBugs report
       uses: actions/upload-artifact@v3
       if: always()
@@ -158,10 +168,17 @@ jobs:
         name: version-json
         path: pages/
 
-    - name: Copy web resources
+    - name: Download Javadoc
+      uses: actions/download-artifact@v3
+      with:
+        name: javadoc
+        path: pages/javadoc/
+
+    - name: Copy web resources and user manual
       shell: bash
       run: |
         cp -r src/main/resources/web/* pages/
+        cp docs/user-manual.md pages/
         ls -la pages/
 
     - name: Setup Pages

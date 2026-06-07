@@ -191,6 +191,26 @@
                 <version>3.1.2</version>
             </plugin>
 
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <source>21</source>
+                    <encoding>UTF-8</encoding>
+                    <nohelp>true</nohelp>
+                    <show>protected</show>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-javadoc</id>
+                        <phase>prepare-package</phase>
+                        <goals><goal>javadoc</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- JaCoCo : couverture de code avec seuil minimal -->
             <plugin>
                 <groupId>org.jacoco</groupId>
