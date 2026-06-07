@@ -33,6 +33,8 @@ jobs:
       run: mvn spotbugs:check -DskipTests
 
     - name: OWASP Dependency Check
+      env:
+        NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
       run: mvn dependency-check:check -DskipTests
 
     - name: Run tests with JaCoCo coverage

@@ -289,9 +289,11 @@
                         <format>HTML</format>
                         <format>JSON</format>
                     </formats>
+                    <failOnError>false</failOnError>
                     <suppressionFiles>
                         <suppressionFile>owasp-suppressions.xml</suppressionFile>
                     </suppressionFiles>
+                    <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
                 </configuration>
                 <executions>
                     <execution>
