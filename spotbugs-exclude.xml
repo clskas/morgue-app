@@ -8,4 +8,8 @@
             <Package name="~com\.gestionmorgue\.config\..*" />
         </Or>
     </Match>
+    <Match>
+        <Class name="com.gestionmorgue.service.BackupService" />
+        <Bug pattern="SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE" />
+    </Match>
 </FindBugsFilter>

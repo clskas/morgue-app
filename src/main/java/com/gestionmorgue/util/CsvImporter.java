@@ -23,7 +23,7 @@ public class CsvImporter {
         ImportResult result = new ImportResult();
         if (lines.isEmpty()) return result;
         String header = lines.get(0);
-        if (!header.toLowerCase().contains("nom") && !header.toLowerCase().contains("nom")) {
+        if (!header.toLowerCase().contains("nom")) {
             result.errors.add("En-tête CSV non reconnue: " + header);
             return result;
         }
@@ -34,7 +34,7 @@ public class CsvImporter {
                 String[] parts = parseCsvLine(line);
                 if (parts.length < 2) { result.errors.add("Ligne " + (i+1) + ": format invalide"); continue; }
                 String lastName = parts[0].trim();
-                String firstName = parts.length > 1 ? parts[1].trim() : "";
+                String firstName = parts[1].trim();
                 String birthDate = parts.length > 2 ? parts[2].trim() : "";
                 String deathDate = parts.length > 3 ? parts[3].trim() : "";
                 String placeOfDeath = parts.length > 4 ? parts[4].trim() : "";

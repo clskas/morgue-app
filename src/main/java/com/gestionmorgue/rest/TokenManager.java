@@ -8,6 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Base64;
@@ -33,10 +34,10 @@ public class TokenManager {
             long expires = issued + TOKEN_TTL_SECONDS;
             String payload = username + ":" + role + ":" + issued + ":" + expires;
             Mac mac = Mac.getInstance(HMAC_ALGO);
-            mac.init(new SecretKeySpec(getServerSecret().getBytes(), HMAC_ALGO));
-            String signature = HexFormat.of().formatHex(mac.doFinal(payload.getBytes()));
+            mac.init(new SecretKeySpec(getServerSecret().getBytes(StandardCharsets.UTF_8), HMAC_ALGO));
+            String signature = HexFormat.of().formatHex(mac.doFinal(payload.getBytes(StandardCharsets.UTF_8)));
             return Base64.getUrlEncoder().withoutPadding().encodeToString(
-                    (payload + ":" + signature).getBytes());
+                    (payload + ":" + signature).getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new RuntimeException("Erreur génération token", e);
         }
@@ -44,7 +45,7 @@ public class TokenManager {
 
     public static TokenValidation validateToken(String token) {
         try {
-            String decoded = new String(Base64.getUrlDecoder().decode(token));
+            String decoded = new String(Base64.getUrlDecoder().decode(token), StandardCharsets.UTF_8);
             String[] parts = decoded.split(":");
             if (parts.length < 5) return TokenValidation.invalid("Format invalide");
 
@@ -55,8 +56,8 @@ public class TokenManager {
 
             String payload = parts[0] + ":" + parts[1] + ":" + parts[2] + ":" + parts[3];
             Mac mac = Mac.getInstance(HMAC_ALGO);
-            mac.init(new SecretKeySpec(getServerSecret().getBytes(), HMAC_ALGO));
-            String expectedSig = HexFormat.of().formatHex(mac.doFinal(payload.getBytes()));
+            mac.init(new SecretKeySpec(getServerSecret().getBytes(StandardCharsets.UTF_8), HMAC_ALGO));
+            String expectedSig = HexFormat.of().formatHex(mac.doFinal(payload.getBytes(StandardCharsets.UTF_8)));
 
             if (!signature.equals(expectedSig)) return TokenValidation.invalid("Signature invalide");
             if (Instant.now().getEpochSecond() > expires) return TokenValidation.invalid("Token expiré");

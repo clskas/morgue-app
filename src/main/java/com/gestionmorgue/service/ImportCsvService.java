@@ -1,8 +1,10 @@
 package com.gestionmorgue.service;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ public class ImportCsvService {
     public ImportResult importDeceasedFromCsv(String filePath) {
         ImportResult result = new ImportResult();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath), StandardCharsets.UTF_8)) {
             String line;
             boolean isFirstLine = true;
 
