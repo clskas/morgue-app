@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "download_url": "https://github.com/OWNER/gestionmorgue/releases/download/v1.0.0/gestionmorgue-1.0.0.jar",
+  "checksum_sha256": "REPLACE_WITH_ACTUAL_SHA256",
+  "changelog": "https://github.com/OWNER/gestionmorgue/releases/tag/v1.0.0",
+  "release_date": "2026-06-06",
+  "min_version": "1.0.0",
+  "force_update": false
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="15" styleClass="login-root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.LoginController">
+    <padding>
+        <Insets bottom="30" left="30" right="30" top="10" />
+    </padding>
+
+    <HBox alignment="TOP_RIGHT">
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="langButton" onAction="#handleToggleLanguage" styleClass="header-button" text="EN" />
+    </HBox>
+
+    <VBox alignment="CENTER" spacing="5">
+        <Text fx:id="titleLabel" styleClass="login-title" text="Gestion Morgue">
+            <font><Font size="28" /></font>
+        </Text>
+        <Text fx:id="subtitleLabel" styleClass="login-subtitle" text="Connexion à l'application" />
+    </VBox>
+
+    <VBox spacing="10" styleClass="login-form">
+        <Label fx:id="usernameLabel" text="Identifiant" />
+        <TextField fx:id="usernameField" focusTraversable="true" promptText="Nom d'utilisateur" />
+
+        <Label fx:id="passwordLabel" text="Mot de passe" />
+        <PasswordField fx:id="passwordField" focusTraversable="true" promptText="Mot de passe" />
+
+        <Button fx:id="loginButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleLogin" prefWidth="340" styleClass="login-button" text="_Se connecter" />
+    </VBox>
+
+    <Label fx:id="versionLabel" styleClass="version-label" text="Version 1.0.0" />
+</VBox>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane styleClass="dashboard-root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.DashboardController">
+
+    <top>
+        <VBox styleClass="header">
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <padding>
+                    <Insets bottom="15" left="20" right="20" top="15" />
+                </padding>
+                <VBox>
+                    <Text styleClass="header-title" text="Gestion Morgue" />
+                    <Label fx:id="userRoleLabel" styleClass="header-role" />
+                </VBox>
+                <TextField fx:id="searchField" promptText="Recherche rapide (N° dossier, nom...)" HBox.hgrow="ALWAYS" maxWidth="300" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="welcomeLabel" styleClass="header-welcome" />
+                <Button fx:id="themeButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleToggleTheme" styleClass="header-button" text="_Thème" />
+                <Button fx:id="langButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleToggleLanguage" styleClass="header-button" text="FR/_EN" />
+                <Button fx:id="themeCreatorButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleThemeCreator" styleClass="header-button" text="P_alette" />
+                <Button id="updateButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleCheckUpdate" styleClass="header-button" text="_Mise à jour" />
+                <Button id="logoutButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleLogout" styleClass="header-button" text="_Déconnexion" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <left>
+        <VBox spacing="5" styleClass="sidebar">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <Label styleClass="sidebar-title" text="Navigation" />
+                <Button fx:id="navDeceased" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleDeceasedManagement" styleClass="sidebar-button" text="_Défunts" />
+            <Button fx:id="navStorage" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleStorageManagement" styleClass="sidebar-button" text="S_tockage" />
+            <Button fx:id="navInterventions" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleInterventions" styleClass="sidebar-button" text="_Interventions" />
+            <Button fx:id="navExits" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleExitAuthorizations" styleClass="sidebar-button" text="_Sorties" />
+            <Button fx:id="navReports" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleReports" styleClass="sidebar-button" text="_Rapports" />
+            <Button fx:id="navAudit" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleAuditLog" styleClass="sidebar-button" text="_Journal" />
+            <Button fx:id="navUsers" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleUsers" styleClass="sidebar-button" text="_Utilisateurs" />
+            <Button fx:id="navFamily" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleFamilyContacts" styleClass="sidebar-button" text="_Familles" />
+            <Button fx:id="navTheme" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleThemeCreator" styleClass="sidebar-button" text="_Thème" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox fx:id="mainContent" spacing="20" styleClass="main-content">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+
+            <Text styleClass="content-title" text="Tableau de bord" />
+
+            <HBox spacing="15">
+                <VBox onMouseClicked="#handleDeceasedManagement" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="totalDeceasedLabel" text="0" />
+                    <Label styleClass="stat-label" text="Défunts enregistrés" />
+                </VBox>
+                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="occupiedStorageLabel" text="0" />
+                    <Label styleClass="stat-label" text="Emplacements occupés" />
+                </VBox>
+                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="totalStorageLabel" text="0" />
+                    <Label styleClass="stat-label" text="Emplacements total" />
+                </VBox>
+                <VBox onMouseClicked="#handleInterventions" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="pendingInterventionsLabel" text="0" />
+                    <Label styleClass="stat-label" text="Interventions planifiées" />
+                </VBox>
+            </HBox>
+
+            <HBox spacing="15">
+                <VBox onMouseClicked="#handleExitAuthorizations" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="pendingExitsLabel" text="0" />
+                    <Label styleClass="stat-label" text="Sorties en attente" />
+                </VBox>
+                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="interventionsTodayLabel" text="0" />
+                    <Label styleClass="stat-label" text="Interventions aujourd'hui" />
+                </VBox>
+                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="entriesThisMonthLabel" text="0" />
+                    <Label styleClass="stat-label" text="Entrées ce mois" />
+                </VBox>
+                <VBox onMouseClicked="#handleReports" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="storagePercentLabel" text="0%" />
+                    <Label styleClass="stat-label" text="Stockage utilisé" />
+                </VBox>
+            </HBox>
+
+            <HBox spacing="15">
+                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="lblInterventionsPlanned" text="0" />
+                    <Label styleClass="stat-label" text="Interventions planifiées" />
+                </VBox>
+                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="lblInterventionsCompleted" text="0" />
+                    <Label styleClass="stat-label" text="Interventions terminées" />
+                </VBox>
+                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                    <Label styleClass="stat-value" fx:id="lblExitsPending" text="0" />
+                    <Label styleClass="stat-label" text="Sorties en attente" />
+                </VBox>
+            </HBox>
+
+            <Label styleClass="section-title" text="Stockage" />
+            <ProgressBar fx:id="storageBar" prefWidth="Infinity" progress="0" styleClass="storage-bar" />
+
+            <Label styleClass="section-title" text="Activité récente" />
+            <VBox fx:id="recentActivity" spacing="3" styleClass="activity-feed" />
+
+            <HBox spacing="15">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label styleClass="section-title" text="Entrées mensuelles" />
+                    <VBox fx:id="chartContainer" prefHeight="200" />
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label styleClass="section-title" text="Occupation stockage" />
+                    <VBox fx:id="pieChartContainer" prefHeight="200" />
+                </VBox>
+            </HBox>
+            <Button onAction="#handleRefresh" styleClass="header-button" text="Rafraîchir" />
+        </VBox>
+    </center>
+</BorderPane>

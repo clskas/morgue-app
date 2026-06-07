@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.StorageController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <Text styleClass="content-title" text="Gestion du Stockage" />
+
+    <Label styleClass="section-title" text="Assigner un emplacement" />
+    <HBox spacing="10">
+        <ComboBox fx:id="deceasedCombo" promptText="Défunt" HBox.hgrow="ALWAYS" />
+        <ComboBox fx:id="locationCombo" promptText="Emplacement" HBox.hgrow="ALWAYS" />
+        <Button fx:id="assignButton" onAction="#handleAssign" styleClass="btn-primary" text="Assigner" />
+    </HBox>
+
+    <Label styleClass="section-title" text="Défunts non assignés (glisser-déposer)" />
+    <ListView fx:id="unassignedList" prefHeight="80" />
+
+    <Label styleClass="section-title" text="Emplacements" />
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <ComboBox fx:id="filterZoneCombo" promptText="Zone" />
+        <CheckBox fx:id="filterOccupiedCheck" onAction="#handleFilter" text="Occupés uniquement" />
+        <Button onAction="#handleClearFilter" text="Effacer filtre" />
+    </HBox>
+    <TableView fx:id="locationTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colCode" text="Code" />
+            <TableColumn fx:id="colLabel" text="Libellé" />
+            <TableColumn fx:id="colZone" text="Zone" />
+            <TableColumn fx:id="colStatus" text="Statut" />
+        </columns>
+    </TableView>
+
+    <Label styleClass="section-title" text="Assignations en cours" />
+    <HBox spacing="10">
+        <TableView fx:id="assignmentTable" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colAssignedDeceased" text="Défunt" />
+                <TableColumn fx:id="colAssignedLocation" text="Emplacement" />
+                <TableColumn fx:id="colAssignedAt" text="Assigné le" />
+                <TableColumn fx:id="colReleasedAt" text="Libéré le" />
+            </columns>
+        </TableView>
+        <VBox spacing="5" alignment="TOP_CENTER">
+            <Button fx:id="releaseButton" onAction="#handleRelease" styleClass="btn-danger" text="Libérer" />
+            <Button fx:id="labelsButton" onAction="#handlePrintLabels" text="Étiquettes" />
+        </VBox>
+    </HBox>
+
+    <Label fx:id="historyTitle" styleClass="section-title" />
+    <HBox spacing="10">
+        <TableView fx:id="historyTable" HBox.hgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colHistoryDeceased" />
+                <TableColumn fx:id="colHistoryLocation" />
+                <TableColumn fx:id="colHistoryAssignedAt" />
+                <TableColumn fx:id="colHistoryReleasedAt" />
+                <TableColumn fx:id="colHistoryReleasedBy" />
+            </columns>
+        </TableView>
+        <VBox spacing="5" alignment="TOP_CENTER">
+            <Button fx:id="btnRefreshHistory" />
+        </VBox>
+    </HBox>
+</VBox>

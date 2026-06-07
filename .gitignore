@@ -1,0 +1,15 @@
+target/
+*.class
+*.jar
+*.log
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+classpath
+.DS_Store
+gestionmorgue.backup.jar
+update.bat
+update.sh
+dependency-reduced-pom.xml

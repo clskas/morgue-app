@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.ThemeController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <Text styleClass="content-title" text="Créateur de thème" />
+
+    <GridPane hgap="15" vgap="10">
+        <padding><Insets bottom="10" /></padding>
+        <Label text="Couleur primaire" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <ColorPicker fx:id="primaryColor" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label text="Arrière-plan" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <ColorPicker fx:id="bgColor" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label text="Surface" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <ColorPicker fx:id="surfaceColor" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="Texte" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <ColorPicker fx:id="textColor" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="Accent" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <ColorPicker fx:id="accentColor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    </GridPane>
+
+    <HBox spacing="10">
+        <Button onAction="#handlePreview" text="Aperçu" />
+        <Button onAction="#handleApply" styleClass="btn-primary" text="Appliquer" />
+    </HBox>
+
+    <Label styleClass="section-title" text="Aperçu" />
+    <VBox fx:id="previewBox" spacing="10" style="-fx-padding:20; -fx-background-radius:8;">
+        <Label style="-fx-font-size:18; -fx-font-weight:bold;" text="Exemple de texte" />
+        <Button text="Bouton" />
+        <Label text="Ceci est un aperçu du thème personnalisé." />
+    </VBox>
+</VBox>

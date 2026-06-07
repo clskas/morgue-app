@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.InterventionController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <Text styleClass="content-title" text="Interventions" />
+
+    <Label styleClass="section-title" text="Planifier une intervention" />
+    <HBox spacing="10">
+        <ComboBox fx:id="deceasedCombo" promptText="Défunt" HBox.hgrow="ALWAYS" />
+        <ComboBox fx:id="typeCombo" promptText="Type" HBox.hgrow="ALWAYS" />
+        <DatePicker fx:id="datePicker" promptText="Date" HBox.hgrow="ALWAYS" />
+        <Button fx:id="planButton" onAction="#handleSchedule" styleClass="btn-primary" text="Planifier" />
+    </HBox>
+
+    <Label styleClass="section-title" text="Compte rendu" />
+    <HBox spacing="10">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Rapport" />
+            <TextArea fx:id="reportArea" prefRowCount="3" />
+        </VBox>
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Produits utilisés" />
+            <TextArea fx:id="productsArea" prefRowCount="3" />
+        </VBox>
+    </HBox>
+    <HBox spacing="10">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Signature (nom complet)" />
+            <TextField fx:id="signatureField" promptText="Signature (nom complet)" />
+        </VBox>
+    </HBox>
+    <Button fx:id="completeButton" disable="true" onAction="#handleComplete" styleClass="btn-success" text="Terminer l'intervention" />
+
+    <Label styleClass="section-title" text="Interventions" />
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <ComboBox fx:id="filterTypeCombo" promptText="Type" />
+        <ComboBox fx:id="filterStatusCombo" promptText="Statut" />
+        <Button onAction="#handleFilter" text="Filtrer" />
+        <Button onAction="#handleClearFilter" text="Effacer" />
+    </HBox>
+    <TableView fx:id="interventionTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colDeceased" text="Défunt" />
+            <TableColumn fx:id="colType" text="Type" />
+            <TableColumn fx:id="colPerformer" text="Intervenant" />
+            <TableColumn fx:id="colScheduled" text="Planifiée le" />
+            <TableColumn fx:id="colStatus" text="Statut" />
+        </columns>
+    </TableView>
+
+    <TitledPane animated="false" text="Pièces jointes" fx:id="attachmentPane" expanded="false">
+        <VBox spacing="10">
+            <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="attachmentDescription" promptText="Description" HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnAddAttachment" onAction="#handleAddAttachment" text="Ajouter" />
+                <Button fx:id="btnDeleteAttachment" onAction="#handleDeleteAttachment" text="Supprimer" />
+            </HBox>
+            <ListView fx:id="attachmentList" prefHeight="120" />
+        </VBox>
+    </TitledPane>
+</VBox>

@@ -1,0 +1,91 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #1e1e2e; color: #cdd6f4; height: 100vh; }
+#app { height: 100vh; display: flex; }
+
+.view { display: none; }
+.view.active { display: flex; }
+
+#login-view {
+  width: 100%; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #1e1e2e 0%, #181825 100%);
+}
+.login-card {
+  background: #313244; padding: 2.5rem; border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4); width: 380px;
+}
+.login-card h1 { text-align: center; color: #cba6f7; font-size: 1.8rem; margin-bottom: 0.3rem; }
+.login-card .subtitle { text-align: center; color: #a6adc8; margin-bottom: 1.5rem; font-size: 0.9rem; }
+
+#main-view { width: 100%; }
+.sidebar {
+  width: 220px; background: #181825; padding: 1rem 0;
+  display: flex; flex-direction: column; flex-shrink: 0;
+}
+.sidebar h2 { color: #cba6f7; padding: 0 1.2rem 1rem; font-size: 1.3rem; border-bottom: 1px solid #313244; }
+.sidebar nav { flex: 1; padding: 0.5rem 0; }
+.nav-item {
+  display: block; padding: 0.7rem 1.2rem; color: #a6adc8; text-decoration: none;
+  transition: all 0.2s; border-left: 3px solid transparent;
+}
+.nav-item:hover { background: #1e1e2e; color: #cdd6f4; }
+.nav-item.active { background: #1e1e2e; color: #cba6f7; border-left-color: #cba6f7; }
+.sidebar-footer { padding: 1rem 1.2rem; border-top: 1px solid #313244; font-size: 0.8rem; color: #6c7086; }
+
+.content { flex: 1; padding: 1.5rem 2rem; overflow-y: auto; }
+.page { display: none; }
+.page.active { display: block; }
+
+h2 { color: #cba6f7; margin-bottom: 1rem; }
+
+.form-group { margin-bottom: 0.8rem; }
+.form-group label { display: block; margin-bottom: 0.25rem; font-size: 0.85rem; color: #a6adc8; }
+.form-row { display: flex; gap: 1rem; }
+.form-row .form-group { flex: 1; }
+input, select, textarea {
+  width: 100%; padding: 0.55rem 0.7rem; border: 1px solid #45475a; border-radius: 6px;
+  background: #1e1e2e; color: #cdd6f4; font-size: 0.9rem; outline: none;
+}
+input:focus, select:focus { border-color: #cba6f7; }
+
+.btn {
+  padding: 0.55rem 1.2rem; border: none; border-radius: 6px; cursor: pointer;
+  font-size: 0.9rem; transition: all 0.2s; background: #45475a; color: #cdd6f4;
+}
+.btn:hover { background: #585b70; }
+.btn-primary { background: #cba6f7; color: #1e1e2e; }
+.btn-primary:hover { background: #b4befe; }
+.btn-sm { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.stat-card {
+  background: #313244; padding: 1.2rem; border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.stat-card h3 { font-size: 0.85rem; color: #a6adc8; margin-bottom: 0.3rem; }
+.stat-card p { font-size: 1.8rem; font-weight: bold; color: #cba6f7; }
+
+.health-card { background: #313244; padding: 1.2rem; border-radius: 10px; }
+.health-card pre { margin-top: 0.5rem; background: #1e1e2e; padding: 0.8rem; border-radius: 6px; font-size: 0.8rem; overflow-x: auto; }
+
+.toolbar { display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center; }
+.toolbar input { width: 250px; }
+
+.data-table {
+  width: 100%; border-collapse: collapse; background: #313244; border-radius: 8px; overflow: hidden; margin-bottom: 1rem;
+}
+.data-table th { background: #45475a; padding: 0.6rem 0.8rem; text-align: left; font-size: 0.8rem; color: #a6adc8; }
+.data-table td { padding: 0.5rem 0.8rem; border-top: 1px solid #45475a; font-size: 0.85rem; }
+.data-table tr:hover td { background: #45475a; }
+
+.form-card {
+  background: #313244; padding: 1.2rem; border-radius: 10px; margin-top: 1rem;
+}
+.form-card h3 { color: #a6adc8; margin-bottom: 0.8rem; font-size: 0.9rem; }
+
+.error-msg { color: #f38ba8; font-size: 0.85rem; margin-bottom: 0.5rem; min-height: 1.2rem; }
+.metrics-pre { background: #181825; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.8rem; line-height: 1.5; }
+
+.btn-danger { background: #f38ba8; color: #1e1e2e; }
+.btn-danger:hover { background: #eba0ac; }
+
+#user-info { display: block; margin-bottom: 0.3rem; }

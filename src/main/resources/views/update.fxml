@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="update-root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.UpdateController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <Text styleClass="content-title" text="Mise à jour de l'application" />
+
+    <HBox spacing="10">
+        <Label text="Version actuelle:" />
+        <Label fx:id="currentVersionLabel" styleClass="label-value" />
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Version distante:" />
+        <Label fx:id="remoteVersionLabel" styleClass="label-value" />
+    </HBox>
+
+    <Label text="Notes de version:" />
+    <TextArea fx:id="changelogArea" editable="false" prefRowCount="6" VBox.vgrow="ALWAYS" />
+
+    <ProgressBar fx:id="progressBar" prefWidth="460" visible="false" />
+
+    <Label fx:id="statusLabel" styleClass="status-label" />
+
+    <CheckBox fx:id="disableCheckCheckbox" onAction="#handleToggleCheck" text="Désactiver la vérification automatique des mises à jour" />
+
+    <HBox spacing="10">
+        <Button fx:id="downloadButton" onAction="#handleDownload" styleClass="button-primary" text="Télécharger la mise à jour" />
+        <Button fx:id="btnRollback" onAction="#handleRollback" styleClass="button-warning" text="Restaurer la version précédente" visible="false" managed="false" />
+        <Button fx:id="closeButton" onAction="#close" text="Fermer" />
+    </HBox>
+</VBox>

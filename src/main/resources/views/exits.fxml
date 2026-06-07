@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.ExitController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <Text styleClass="content-title" text="Autorisations de Sortie" />
+
+    <Label styleClass="section-title" text="Nouvelle autorisation" />
+    <HBox spacing="10">
+        <ComboBox fx:id="deceasedCombo" promptText="Défunt" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="transportField" promptText="Transporteur" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="authorizedPersonField" promptText="Personne autorisée" HBox.hgrow="ALWAYS" />
+    </HBox>
+    <HBox spacing="10">
+        <TextArea fx:id="notesArea" prefRowCount="2" promptText="Notes" HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleCreate" styleClass="btn-primary" text="Créer" />
+    </HBox>
+
+    <Label styleClass="section-title" text="Actions" />
+    <HBox spacing="10">
+        <Button fx:id="approveButton" disable="true" onAction="#handleApprove" styleClass="btn-success" text="Approuver" />
+        <Button fx:id="confirmExitButton" disable="true" onAction="#handleConfirmExit" styleClass="btn-danger" text="Confirmer sortie" />
+    </HBox>
+
+    <Label styleClass="section-title" text="Vérification des documents" />
+    <HBox spacing="10">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <CheckBox fx:id="chkCertificateDeath" text="Certificat de décès vérifié" />
+            <CheckBox fx:id="chkAuthorizationForm" text="Autorisation vérifiée" />
+            <CheckBox fx:id="chkIdentityVerified" text="Pièce d'identité vérifiée" />
+        </VBox>
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Notes de vérification" />
+            <TextArea fx:id="verificationNotes" prefRowCount="3" />
+        </VBox>
+    </HBox>
+    <HBox spacing="10">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Signature (nom complet)" />
+            <TextField fx:id="signatureField" promptText="Signature (nom complet)" />
+        </VBox>
+    </HBox>
+
+    <Label styleClass="section-title" text="Autorisations" />
+    <TableView fx:id="exitTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colDeceasedName" text="Défunt" />
+            <TableColumn fx:id="colTransport" text="Transporteur" />
+            <TableColumn fx:id="colStatus" text="Statut" />
+            <TableColumn fx:id="colDate" text="Date" />
+            <TableColumn fx:id="colSignedBy" text="Signé par" />
+            <TableColumn fx:id="colDocuments" text="Documents" />
+        </columns>
+    </TableView>
+</VBox>

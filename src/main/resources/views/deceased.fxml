@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.DeceasedController">
+    <Text styleClass="content-title" text="Gestion des Défunts" />
+
+    <TitledPane animated="false" text="Recherche avancée" expanded="false">
+        <GridPane hgap="10" vgap="10">
+            <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+            <Label text="Nom/Prénom" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="searchField" promptText="Rechercher par nom, prénom..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="N° Dossier" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <TextField fx:id="searchDossierField" promptText="N° dossier" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+            <Label text="Sexe" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="searchGenderCombo" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Décès du" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <DatePicker fx:id="searchDateFrom" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+            <Label text="Décès au" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <DatePicker fx:id="searchDateTo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <HBox spacing="10" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                <Button fx:id="searchButton" onAction="#handleSearch" text="Rechercher" />
+                <Button fx:id="clearSearchButton" onAction="#handleClearSearch" text="Effacer" />
+            </HBox>
+        </GridPane>
+    </TitledPane>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Pagination fx:id="pagination" pageCount="1" maxPageIndicatorCount="10" HBox.hgrow="ALWAYS" />
+        <Label fx:id="resultCountLabel" styleClass="header-role" />
+    </HBox>
+
+    <TableView fx:id="deceasedTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colDossier" prefWidth="150" text="N° Dossier" />
+            <TableColumn fx:id="colLastName" prefWidth="200" text="Nom" />
+            <TableColumn fx:id="colFirstName" prefWidth="200" text="Prénom" />
+            <TableColumn fx:id="colDeathDate" prefWidth="150" text="Date décès" />
+            <TableColumn fx:id="colGender" prefWidth="100" text="Sexe" />
+        </columns>
+    </TableView>
+
+    <TitledPane animated="false" text="Fiche Défunt">
+        <GridPane hgap="10" vgap="10">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+
+            <Label text="Nom *" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="Prénom *" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <TextField fx:id="firstNameField" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+            <Label text="NIR" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="nirField" promptText="13 ou 15 chiffres" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Date naissance" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <DatePicker fx:id="birthDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+            <Label text="Date décès" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <DatePicker fx:id="deathDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Lieu décès" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="placeOfDeathField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+            <Label text="Sexe" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <ComboBox fx:id="genderCombo" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <Label text="Observations" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextArea fx:id="observationsArea" prefRowCount="3" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
+
+            <HBox spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="5">
+                <Button fx:id="saveButton" onAction="#handleSave" styleClass="button-primary" text="Enregistrer" />
+                <Button fx:id="deleteButton" onAction="#handleDelete" styleClass="button-danger" text="Supprimer" />
+                <Button fx:id="clearButton" onAction="#handleClear" text="Effacer" />
+                <Button fx:id="btnExportPdf" text="Export PDF" />
+            </HBox>
+        </GridPane>
+    </TitledPane>
+
+    <TitledPane animated="false" text="Pièces jointes" fx:id="attachmentPane" expanded="false">
+        <VBox spacing="10">
+            <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="attachmentDescription" promptText="Description" HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnAddAttachment" onAction="#handleAddAttachment" text="Ajouter" />
+                <Button fx:id="btnDeleteAttachment" onAction="#handleDeleteAttachment" text="Supprimer" />
+            </HBox>
+            <ListView fx:id="attachmentList" prefHeight="120" />
+        </VBox>
+    </TitledPane>
+</VBox>

@@ -1,0 +1,150 @@
+name: Build, Test & Release
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-maven-
+
+    - name: Compile
+      run: mvn compile -DskipTests
+
+    - name: Run tests
+      run: mvn test
+
+    - name: Package fat JAR
+      run: mvn package -DskipTests -DskipBenchmarks
+
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: gestionmorgue-jar
+        path: target/gestionmorgue-*.jar
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Download built JAR
+      uses: actions/download-artifact@v3
+      with:
+        name: gestionmorgue-jar
+        path: release/
+
+    - name: Extract version and checksum
+      shell: bash
+      run: |
+        VERSION="${GITHUB_REF#refs/tags/v}"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        JAR_FILE=$(ls release/gestionmorgue-*.jar | head -1)
+        CHECKSUM=$(sha256sum "$JAR_FILE" | cut -d' ' -f1)
+        echo "CHECKSUM=$CHECKSUM" >> $GITHUB_ENV
+
+    - name: Rename JAR with version tag
+      shell: bash
+      run: |
+        mv release/gestionmorgue-*.jar "release/gestionmorgue-${{ env.VERSION }}.jar"
+        echo "JAR_FILE=release/gestionmorgue-${{ env.VERSION }}.jar" >> $GITHUB_ENV
+
+    - name: Generate version.json
+      shell: bash
+      run: |
+        cat > release/version.json << JSONEOF
+        {
+          "version": "${{ env.VERSION }}",
+          "download_url": "https://github.com/${{ github.repository }}/releases/download/v${{ env.VERSION }}/gestionmorgue-${{ env.VERSION }}.jar",
+          "checksum_sha256": "${{ env.CHECKSUM }}",
+          "changelog": "https://github.com/${{ github.repository }}/releases/tag/v${{ env.VERSION }}",
+          "release_date": "$(date -u +%Y-%m-%d)",
+          "min_version": "1.0.0",
+          "force_update": false
+        }
+        JSONEOF
+        cat release/version.json
+
+    - name: Upload version.json artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: version-json
+        path: release/version.json
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          release/gestionmorgue-${{ env.VERSION }}.jar
+          release/version.json
+        name: "Gestion Morgue v${{ env.VERSION }}"
+        body: |
+          ## Gestion Morgue v${{ env.VERSION }}
+
+          ### Installation
+          1. Téléchargez `gestionmorgue-${{ env.VERSION }}.jar`
+          2. Lancez : `java -jar gestionmorgue-${{ env.VERSION }}.jar`
+
+          Checksum SHA-256 : `${{ env.CHECKSUM }}`
+
+  deploy-pages:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Download version.json
+      uses: actions/download-artifact@v3
+      with:
+        name: version-json
+        path: pages/
+
+    - name: Copy web resources
+      shell: bash
+      run: |
+        cp -r src/main/resources/web/* pages/
+        ls -la pages/
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: pages/
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2

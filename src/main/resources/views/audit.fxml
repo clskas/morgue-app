@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="10" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.AuditLogController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Text styleClass="content-title" text="Journal d'audit" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="logCountLabel" styleClass="header-role" />
+        <Button onAction="#handleExportCsv" styleClass="header-button" text="Export CSV" />
+        <Button onAction="#handleRefresh" styleClass="header-button" text="Rafraîchir" />
+    </HBox>
+
+    <TitledPane animated="false" text="Filtres" expanded="false">
+        <GridPane hgap="10" vgap="10">
+            <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+
+            <Label text="Utilisateur" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="filterUserField" promptText="Filtrer par utilisateur" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label text="Action" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <TextField fx:id="filterActionField" promptText="Filtrer par action" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+            <Label text="Entité" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="filterEntityType" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <HBox spacing="10" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                <Button onAction="#handleFilter" text="Filtrer" />
+                <Button onAction="#handleClearFilters" text="Effacer" />
+            </HBox>
+
+            <Label text="Date début" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <DatePicker fx:id="dateFrom" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Date fin" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <DatePicker fx:id="dateTo" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+        </GridPane>
+    </TitledPane>
+
+    <Pagination fx:id="pagination" pageCount="1" maxPageIndicatorCount="10" />
+
+    <TableView fx:id="logTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colTimestamp" prefWidth="180" text="Date" />
+            <TableColumn fx:id="colUser" prefWidth="120" text="Utilisateur" />
+            <TableColumn fx:id="colAction" prefWidth="150" text="Action" />
+            <TableColumn fx:id="colDetails" prefWidth="300" text="Détails" />
+            <TableColumn fx:id="colEntity" prefWidth="120" text="Entité" />
+        </columns>
+    </TableView>
+</VBox>

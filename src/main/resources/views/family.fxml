@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.FamilyContactController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <Text styleClass="content-title" text="Contacts Familles" />
+
+    <ComboBox fx:id="deceasedCombo" promptText="Sélectionner un défunt" />
+
+    <Label styleClass="section-title" text="Nouveau contact" />
+    <GridPane hgap="10" vgap="10">
+        <padding><Insets bottom="10" /></padding>
+        <TextField fx:id="contactNameField" promptText="Nom complet *" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="relationshipField" promptText="Lien de parenté" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="phoneField" promptText="Téléphone" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="emailField" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextArea fx:id="addressArea" promptText="Adresse" prefRowCount="2" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextArea fx:id="notesArea" promptText="Notes" prefRowCount="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Button onAction="#handleAdd" styleClass="btn-primary" text="Ajouter" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+    </GridPane>
+
+    <Label styleClass="section-title" text="Contacts" />
+    <TableView fx:id="contactTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colName" prefWidth="200" text="Nom" />
+            <TableColumn fx:id="colRelationship" prefWidth="120" text="Lien" />
+            <TableColumn fx:id="colPhone" prefWidth="150" text="Téléphone" />
+        </columns>
+    </TableView>
+    <Button onAction="#handleDelete" styleClass="btn-danger" text="Supprimer le contact sélectionné" />
+</VBox>

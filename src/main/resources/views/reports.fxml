@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.ReportController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Text styleClass="content-title" text="Rapports et Statistiques" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleRefresh" styleClass="header-button" text="Rafraîchir" />
+    </HBox>
+
+    <Label styleClass="section-title" text="Vue d'ensemble" />
+    <HBox spacing="15">
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="stat-value" fx:id="totalDeceased" text="0" />
+            <Label styleClass="stat-label" text="Défunts total" />
+        </VBox>
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="stat-value" fx:id="occupiedStorage" text="0 / 0" />
+            <Label styleClass="stat-label" text="Stockage occupé" />
+        </VBox>
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="stat-value" fx:id="pendingInterventions" text="0" />
+            <Label styleClass="stat-label" text="Interventions en attente" />
+        </VBox>
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="stat-value" fx:id="pendingExits" text="0" />
+            <Label styleClass="stat-label" text="Sorties en attente" />
+        </VBox>
+    </HBox>
+
+    <HBox spacing="15">
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="stat-value" fx:id="interventionsToday" text="0" />
+            <Label styleClass="stat-label" text="Interventions aujourd'hui" />
+        </VBox>
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="stat-value" fx:id="entriesThisMonth" text="0" />
+            <Label styleClass="stat-label" text="Entrées ce mois" />
+        </VBox>
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+            <Label styleClass="stat-value" fx:id="totalStorage" text="0" />
+            <Label styleClass="stat-label" text="Capacité totale" />
+        </VBox>
+    </HBox>
+
+    <Label styleClass="section-title" text="Export" />
+    <HBox spacing="10">
+        <Button onAction="#handleExportCsv" styleClass="btn-primary" text="Export CSV" />
+        <Button onAction="#handleExportJson" styleClass="btn-primary" text="Export JSON" />
+        <Button onAction="#handleExportXlsx" styleClass="btn-primary" text="Export Excel" />
+        <Button onAction="#handleExportPdf" styleClass="btn-primary" text="Rapport HTML" />
+        <Button onAction="#handleExportPdfNative" styleClass="btn-primary" text="Rapport PDF natif" />
+        <Button onAction="#handlePrint" fx:id="printButton" styleClass="btn-primary" text="Imprimer" />
+    </HBox>
+
+    <Label styleClass="section-title" text="Sauvegarde" />
+    <HBox spacing="10">
+        <Button onAction="#handleBackup" styleClass="btn-primary" text="Sauvegarder la base" />
+        <Button onAction="#handleRestore" styleClass="btn-danger" text="Restaurer" />
+    </HBox>
+</VBox>
