@@ -29,11 +29,38 @@ jobs:
     - name: Compile
       run: mvn compile -DskipTests
 
-    - name: Run tests
-      run: mvn test
+    - name: SpotBugs static analysis
+      run: mvn spotbugs:check -DskipTests
+
+    - name: OWASP Dependency Check
+      run: mvn dependency-check:check -DskipTests
+
+    - name: Run tests with JaCoCo coverage
+      run: mvn verify -DskipBenchmarks
+
+    - name: Upload JaCoCo coverage report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: jacoco-report
+        path: target/site/jacoco/
+
+    - name: Upload SpotBugs report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: spotbugs-report
+        path: target/spotbugs/
+
+    - name: Upload OWASP report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: owasp-report
+        path: target/dependency-check-report.*
 
     - name: Package fat JAR
-      run: mvn package -DskipTests -DskipBenchmarks
+      run: mvn package -DskipTests -DskipBenchmarks -Dskip.spotbugs -Dskip.dependencyCheck
 
     - name: Upload JAR artifact
       uses: actions/upload-artifact@v3
