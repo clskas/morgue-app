@@ -48,6 +48,7 @@ public class DatabaseManager {
                             DatabaseConfig.getJdbcUser(),
                             DatabaseConfig.getJdbcPassword()
                     )
+                    .baselineOnMigrate(true)
                     .locations("classpath:db/migration")
                     .load();
             flyway.migrate();
