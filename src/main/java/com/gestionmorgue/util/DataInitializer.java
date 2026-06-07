@@ -62,8 +62,17 @@ public class DataInitializer {
             thanato.setActive(true);
             session.persist(thanato);
 
+            User greffier = new User();
+            greffier.setUsername("greffier");
+            greffier.setPasswordHash(BCrypt.hashpw("greffier123", BCrypt.gensalt()));
+            greffier.setFullName("Sophie Petit");
+            greffier.setRole("GREFFIER");
+            greffier.setEmail("greffier@gestionmorgue.com");
+            greffier.setActive(true);
+            session.persist(greffier);
+
             tx.commit();
-            System.out.println("[DataInitializer] Utilisateurs créés : admin/admin123, medecin/medecin123, thanato/thanato123");
+            System.out.println("[DataInitializer] Utilisateurs créés : admin/admin123, medecin/medecin123, thanato/thanato123, greffier/greffier123");
         } catch (Exception e) {
             tx.rollback();
             throw e;

@@ -34,10 +34,31 @@ public class DatabaseConfig {
         props.put("hibernate.connection.username", Constants.DB_USER);
         props.put("hibernate.connection.password", Constants.DB_PASSWORD);
         props.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        props.put("hibernate.hbm2ddl.auto", "update");
+        props.put("hibernate.hbm2ddl.auto", "validate");
         props.put("hibernate.show_sql", "false");
         props.put("hibernate.format_sql", "true");
         return props;
+    }
+
+    public static String getJdbcUrl() {
+        if ("postgresql".equals(activeProfile)) {
+            return getPostgresqlProperties().get("hibernate.connection.url");
+        }
+        return getH2Properties().get("hibernate.connection.url");
+    }
+
+    public static String getJdbcUser() {
+        if ("postgresql".equals(activeProfile)) {
+            return getPostgresqlProperties().get("hibernate.connection.username");
+        }
+        return getH2Properties().get("hibernate.connection.username");
+    }
+
+    public static String getJdbcPassword() {
+        if ("postgresql".equals(activeProfile)) {
+            return getPostgresqlProperties().get("hibernate.connection.password");
+        }
+        return getH2Properties().get("hibernate.connection.password");
     }
 
     private static Map<String, String> getPostgresqlProperties() {
@@ -52,7 +73,7 @@ public class DatabaseConfig {
         props.put("hibernate.connection.username", pgUser);
         props.put("hibernate.connection.password", pgPass);
         props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL10Dialect");
-        props.put("hibernate.hbm2ddl.auto", "update");
+        props.put("hibernate.hbm2ddl.auto", "validate");
         props.put("hibernate.show_sql", "false");
         props.put("hibernate.format_sql", "true");
         props.put("hibernate.connection.pool_size", "10");

@@ -123,6 +123,13 @@
             <version>5.2.5</version>
         </dependency>
 
+        <!-- Flyway : migrations de base de données -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>9.22.3</version>
+        </dependency>
+
         <!-- JMH Benchmarking -->
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
