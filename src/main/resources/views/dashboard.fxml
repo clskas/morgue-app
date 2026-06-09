@@ -23,7 +23,7 @@
                 <Button fx:id="themeButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleToggleTheme" styleClass="header-button" text="_Thème" />
                 <Button fx:id="langButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleToggleLanguage" styleClass="header-button" text="FR/_EN" />
                 <Button fx:id="themeCreatorButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleThemeCreator" styleClass="header-button" text="P_alette" />
-                <Button id="updateButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleCheckUpdate" styleClass="header-button" text="_Mise à jour" />
+                <Button fx:id="updateButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleCheckUpdate" styleClass="header-button" text="_Mise à jour" />
                 <Button id="logoutButton" focusTraversable="true" mnemonicParsing="true" onAction="#handleLogout" styleClass="header-button" text="_Déconnexion" />
             </HBox>
         </VBox>
@@ -57,6 +57,12 @@
                 <padding>
                     <Insets bottom="20" left="20" right="20" top="20" />
                 </padding>
+
+                <HBox fx:id="updateBanner" managed="false" spacing="10" styleClass="update-banner" visible="false">
+                    <Label fx:id="updateBannerLabel" HBox.hgrow="ALWAYS" />
+                    <Button onAction="#handleCheckUpdate" styleClass="button-primary" text="Télécharger" />
+                    <Button onAction="#handleDismissBanner" styleClass="button-close" text="✕" />
+                </HBox>
 
                 <Text styleClass="content-title" text="Tableau de bord" />
 

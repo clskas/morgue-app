@@ -10,6 +10,7 @@ import com.gestionmorgue.update.UpdateChecker;
 import com.gestionmorgue.util.I18nUtil;
 import com.gestionmorgue.util.NotificationUtil;
 import com.gestionmorgue.util.SessionManager;
+import com.gestionmorgue.util.ToastUtil;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
@@ -75,12 +77,16 @@ public class DashboardController {
     @FXML private Button navTheme;
     @FXML private Button navManual;
     @FXML private Button navSettings;
+    @FXML private Button updateButton;
+    @FXML private HBox updateBanner;
+    @FXML private Label updateBannerLabel;
 
     private ReportService reportService;
     private AuditService auditService;
     private InterventionService interventionService;
     private ExitService exitService;
     private ScheduledExecutorService scheduler;
+    private UpdateCheckResult latestCheckResult;
 
     @FXML
     public void initialize() {
@@ -102,6 +108,7 @@ public class DashboardController {
         });
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleWithFixedDelay(() -> Platform.runLater(this::loadDashboardData), 30, 30, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this::checkForUpdates, 1, 1, TimeUnit.HOURS);
         applyRbac();
         checkForUpdates();
     }
@@ -112,30 +119,34 @@ public class DashboardController {
             try {
                 UpdateChecker checker = new UpdateChecker();
                 UpdateCheckResult result = checker.checkForUpdate();
-                if (result.isUpdateAvailable()) {
-                    Platform.runLater(() -> {
-                        boolean download = NotificationUtil.showConfirm(I18nUtil.t("dashboard.update.available"),
-                                I18nUtil.t("update.available.message", result.getVersionInfo().getVersion(),
-                                    result.getVersionInfo().getChangelog() != null ? result.getVersionInfo().getChangelog() : ""));
-                        if (download) {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/update.fxml"));
-                            try {
-                                Parent root = loader.load();
-                                Stage stage = new Stage();
-                                stage.setTitle(I18nUtil.t("action.update") + " - " + Constants.APP_NAME);
-                Scene updateScene = new Scene(root, 540, 480);
-                App.applyTheme(updateScene);
-                App.setStageIcon(stage);
-                stage.setScene(updateScene);
-                stage.show();
-                            } catch (Exception e) {
-                                NotificationUtil.showError(I18nUtil.t("error.title"), e.getMessage());
-                            }
-                        }
-                    });
-                }
+                Platform.runLater(() -> onUpdateCheckResult(result));
             } catch (Exception ignored) {}
         }).start();
+    }
+
+    private void onUpdateCheckResult(UpdateCheckResult result) {
+        latestCheckResult = result;
+        if (!result.isUpdateAvailable()) return;
+        showUpdateAvailableUI(result);
+    }
+
+    private void showUpdateAvailableUI(UpdateCheckResult result) {
+        String version = result.getVersionInfo().getVersion();
+
+        updateButton.setText("Mise à jour disponible!");
+        updateButton.getStyleClass().add("button-update-available");
+
+        updateBannerLabel.setText("Nouvelle version " + version + " disponible");
+        updateBanner.setVisible(true);
+        updateBanner.setManaged(true);
+
+        ToastUtil.show("Nouvelle version " + version + " disponible");
+    }
+
+    @FXML
+    private void handleDismissBanner() {
+        updateBanner.setVisible(false);
+        updateBanner.setManaged(false);
     }
 
     private void applyRbac() {
