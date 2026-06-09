@@ -30,12 +30,12 @@
     </top>
 
     <left>
-        <VBox spacing="5" styleClass="sidebar">
+        <VBox spacing="2" styleClass="sidebar">
             <padding>
                 <Insets bottom="10" left="10" right="10" top="10" />
             </padding>
             <Label styleClass="sidebar-title" text="Navigation" />
-                <Button fx:id="navDeceased" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleDeceasedManagement" styleClass="sidebar-button" text="_Défunts" />
+            <Button fx:id="navDeceased" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleDeceasedManagement" styleClass="sidebar-button" text="_Défunts" />
             <Button fx:id="navStorage" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleStorageManagement" styleClass="sidebar-button" text="S_tockage" />
             <Button fx:id="navInterventions" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleInterventions" styleClass="sidebar-button" text="_Interventions" />
             <Button fx:id="navExits" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleExitAuthorizations" styleClass="sidebar-button" text="_Sorties" />
@@ -45,87 +45,94 @@
             <Button fx:id="navFamily" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleFamilyContacts" styleClass="sidebar-button" text="_Familles" />
             <Button fx:id="navTheme" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleThemeCreator" styleClass="sidebar-button" text="_Thème" />
             <Button fx:id="navSettings" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleSettings" styleClass="sidebar-button" text="P_aramètres" />
+            <Button fx:id="navManual" focusTraversable="true" mnemonicParsing="true" maxWidth="1.7976931348623157E308" onAction="#handleManual" styleClass="sidebar-button" text="_Manuel" />
+            <Region VBox.vgrow="ALWAYS" />
         </VBox>
     </left>
 
     <center>
-        <VBox fx:id="mainContent" spacing="20" styleClass="main-content">
-            <padding>
-                <Insets bottom="20" left="20" right="20" top="20" />
-            </padding>
+        <StackPane>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS" styleClass="main-scroll">
+                <VBox fx:id="mainContent" spacing="20" styleClass="main-content">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
 
-            <Text styleClass="content-title" text="Tableau de bord" />
+                <Text styleClass="content-title" text="Tableau de bord" />
 
-            <HBox spacing="15">
-                <VBox onMouseClicked="#handleDeceasedManagement" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="totalDeceasedLabel" text="0" />
-                    <Label styleClass="stat-label" text="Défunts enregistrés" />
-                </VBox>
-                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="occupiedStorageLabel" text="0" />
-                    <Label styleClass="stat-label" text="Emplacements occupés" />
-                </VBox>
-                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="totalStorageLabel" text="0" />
-                    <Label styleClass="stat-label" text="Emplacements total" />
-                </VBox>
-                <VBox onMouseClicked="#handleInterventions" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="pendingInterventionsLabel" text="0" />
-                    <Label styleClass="stat-label" text="Interventions planifiées" />
-                </VBox>
-            </HBox>
+                <HBox spacing="15">
+                    <VBox onMouseClicked="#handleDeceasedManagement" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="totalDeceasedLabel" text="0" />
+                        <Label styleClass="stat-label" text="Défunts enregistrés" />
+                    </VBox>
+                    <VBox onMouseClicked="#handleStorageManagement" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="occupiedStorageLabel" text="0" />
+                        <Label styleClass="stat-label" text="Emplacements occupés" />
+                    </VBox>
+                    <VBox onMouseClicked="#handleStorageManagement" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="totalStorageLabel" text="0" />
+                        <Label styleClass="stat-label" text="Emplacements total" />
+                    </VBox>
+                    <VBox onMouseClicked="#handleInterventions" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="pendingInterventionsLabel" text="0" />
+                        <Label styleClass="stat-label" text="Interventions planifiées" />
+                    </VBox>
+                </HBox>
 
-            <HBox spacing="15">
-                <VBox onMouseClicked="#handleExitAuthorizations" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="pendingExitsLabel" text="0" />
-                    <Label styleClass="stat-label" text="Sorties en attente" />
-                </VBox>
-                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="interventionsTodayLabel" text="0" />
-                    <Label styleClass="stat-label" text="Interventions aujourd'hui" />
-                </VBox>
-                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="entriesThisMonthLabel" text="0" />
-                    <Label styleClass="stat-label" text="Entrées ce mois" />
-                </VBox>
-                <VBox onMouseClicked="#handleReports" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="storagePercentLabel" text="0%" />
-                    <Label styleClass="stat-label" text="Stockage utilisé" />
-                </VBox>
-            </HBox>
+                <HBox spacing="15">
+                    <VBox onMouseClicked="#handleExitAuthorizations" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="pendingExitsLabel" text="0" />
+                        <Label styleClass="stat-label" text="Sorties en attente" />
+                    </VBox>
+                    <VBox onMouseClicked="#handleInterventions" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="interventionsTodayLabel" text="0" />
+                        <Label styleClass="stat-label" text="Interventions aujourd'hui" />
+                    </VBox>
+                    <VBox onMouseClicked="#handleDeceasedManagement" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="entriesThisMonthLabel" text="0" />
+                        <Label styleClass="stat-label" text="Entrées ce mois" />
+                    </VBox>
+                    <VBox onMouseClicked="#handleReports" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="storagePercentLabel" text="0%" />
+                        <Label styleClass="stat-label" text="Stockage utilisé" />
+                    </VBox>
+                </HBox>
 
-            <HBox spacing="15">
-                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="lblInterventionsPlanned" text="0" />
-                    <Label styleClass="stat-label" text="Interventions planifiées" />
-                </VBox>
-                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="lblInterventionsCompleted" text="0" />
-                    <Label styleClass="stat-label" text="Interventions terminées" />
-                </VBox>
-                <VBox styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
-                    <Label styleClass="stat-value" fx:id="lblExitsPending" text="0" />
-                    <Label styleClass="stat-label" text="Sorties en attente" />
-                </VBox>
-            </HBox>
+                <HBox spacing="15">
+                    <VBox onMouseClicked="#handleInterventions" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="lblInterventionsPlanned" text="0" />
+                        <Label styleClass="stat-label" text="Interventions planifiées" />
+                    </VBox>
+                    <VBox onMouseClicked="#handleInterventions" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="lblInterventionsCompleted" text="0" />
+                        <Label styleClass="stat-label" text="Interventions terminées" />
+                    </VBox>
+                    <VBox onMouseClicked="#handleExitAuthorizations" styleClass="stat-card" focusTraversable="true" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value" fx:id="lblExitsPending" text="0" />
+                        <Label styleClass="stat-label" text="Sorties en attente" />
+                    </VBox>
+                </HBox>
 
-            <Label styleClass="section-title" text="Stockage" />
-            <ProgressBar fx:id="storageBar" prefWidth="Infinity" progress="0" styleClass="storage-bar" />
+                <Label styleClass="section-title" text="Stockage" />
+                <ProgressBar fx:id="storageBar" prefWidth="Infinity" progress="0" styleClass="storage-bar" />
 
-            <Label styleClass="section-title" text="Activité récente" />
-            <VBox fx:id="recentActivity" spacing="3" styleClass="activity-feed" />
+                <Label styleClass="section-title" text="Activité récente" />
+                <VBox fx:id="recentActivity" spacing="3" styleClass="activity-feed" />
 
-            <HBox spacing="15">
-                <VBox HBox.hgrow="ALWAYS">
-                    <Label styleClass="section-title" text="Entrées mensuelles" />
-                    <VBox fx:id="chartContainer" prefHeight="200" />
-                </VBox>
-                <VBox HBox.hgrow="ALWAYS">
-                    <Label styleClass="section-title" text="Occupation stockage" />
-                    <VBox fx:id="pieChartContainer" prefHeight="200" />
-                </VBox>
-            </HBox>
-            <Button onAction="#handleRefresh" styleClass="header-button" text="Rafraîchir" />
-        </VBox>
+                <HBox spacing="15">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label styleClass="section-title" text="Entrées mensuelles" />
+                        <VBox fx:id="chartContainer" prefHeight="200" />
+                    </VBox>
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label styleClass="section-title" text="Occupation stockage" />
+                        <VBox fx:id="pieChartContainer" prefHeight="200" />
+                    </VBox>
+                </HBox>
+                <Button onAction="#handleRefresh" styleClass="header-button" text="Rafraîchir" />
+            </VBox>
+        </ScrollPane>
+            <ProgressIndicator fx:id="contentProgress" visible="false" />
+    </StackPane>
     </center>
 </BorderPane>

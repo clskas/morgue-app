@@ -33,6 +33,7 @@
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Pagination fx:id="pagination" pageCount="1" maxPageIndicatorCount="10" HBox.hgrow="ALWAYS" />
         <Label fx:id="resultCountLabel" styleClass="header-role" />
+        <ProgressIndicator fx:id="progressIndicator" visible="false" prefWidth="20" prefHeight="20" />
     </HBox>
 
     <TableView fx:id="deceasedTable" VBox.vgrow="ALWAYS">
@@ -77,6 +78,7 @@
                 <Button fx:id="deleteButton" onAction="#handleDelete" styleClass="button-danger" text="Supprimer" />
                 <Button fx:id="clearButton" onAction="#handleClear" text="Effacer" />
                 <Button fx:id="btnExportPdf" text="Export PDF" />
+                <Button onAction="#handlePrint" text="Imprimer" />
             </HBox>
         </GridPane>
     </TitledPane>

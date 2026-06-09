@@ -1,7 +1,7 @@
 package com.gestionmorgue.service;
 
 import com.gestionmorgue.dao.DeceasedDao;
-import com.gestionmorgue.dao.GenericDao;
+import com.gestionmorgue.dao.ExitDao;
 import com.gestionmorgue.model.Deceased;
 import com.gestionmorgue.model.ExitAuthorization;
 import com.gestionmorgue.model.User;
@@ -15,11 +15,11 @@ import java.util.List;
 
 public class ExitService {
     private final DeceasedDao deceasedDao;
-    private final GenericDao<ExitAuthorization> exitDao;
+    private final ExitDao exitDao;
 
     public ExitService() {
         this.deceasedDao = new DeceasedDao();
-        this.exitDao = new GenericDao<>(ExitAuthorization.class);
+        this.exitDao = new ExitDao();
     }
 
     public ExitAuthorization createAuthorization(Deceased deceased, User authorizedBy,

@@ -19,13 +19,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.Optional;
 
 public class App extends Application {
 
+    private static final Image APP_ICON = new Image(App.class.getResourceAsStream("/icons/app_256.png"));
     private static String currentTheme = "clair";
+
+    public static void setStageIcon(Stage stage) {
+        stage.getIcons().add(APP_ICON);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -41,11 +47,12 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/login.fxml"));
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, 400, 350);
+        Scene scene = new Scene(root, 450, 400);
         applyTheme(scene);
+        setStageIcon(primaryStage);
         primaryStage.setScene(scene);
         primaryStage.setTitle(Constants.APP_NAME + " - " + I18nUtil.t("login.title"));
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.show();
 
         startRestApi();
@@ -115,6 +122,7 @@ public class App extends Application {
                 updateStage.setTitle("Mise à jour - " + Constants.APP_NAME);
                 Scene updateScene = new Scene(updateRoot, 500, 400);
                 applyTheme(updateScene);
+                setStageIcon(updateStage);
                 updateStage.setScene(updateScene);
                 updateStage.show();
             } catch (Exception e) {

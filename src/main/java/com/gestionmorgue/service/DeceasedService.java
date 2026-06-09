@@ -42,6 +42,10 @@ public class DeceasedService {
         return deceasedDao.search(lastName, firstName, dossierNumber);
     }
 
+    public List<Deceased> searchByQuery(String query, String dossierNumber, java.time.LocalDate dateFrom, java.time.LocalDate dateTo) {
+        return deceasedDao.searchByQuery(query, dossierNumber, dateFrom, dateTo);
+    }
+
     public List<Deceased> getRecentDeceased(int limit) {
         return deceasedDao.findRecentlyAdded(limit);
     }

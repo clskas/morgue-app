@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manuel d'utilisation - Gestion Morgue</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #e0e0e0; background: #1a1a2e; line-height: 1.7; padding: 0; }
+.container { max-width: 960px; margin: 0 auto; padding: 40px 30px; }
+h1 { font-size: 2.2em; margin-bottom: 10px; color: #fff; border-bottom: 3px solid #4fc3f7; padding-bottom: 15px; }
+h2 { font-size: 1.5em; margin: 40px 0 15px; color: #4fc3f7; border-left: 4px solid #4fc3f7; padding-left: 12px; }
+h3 { font-size: 1.15em; margin: 25px 0 10px; color: #b0bec5; }
+p { margin: 10px 0; }
+ul, ol { margin: 10px 0 10px 25px; }
+li { margin: 6px 0; }
+code { background: #2d2d44; padding: 2px 8px; border-radius: 3px; font-size: 0.9em; color: #ce93d8; }
+pre { background: #2d2d44; padding: 15px; border-radius: 6px; overflow-x: auto; margin: 15px 0; }
+kbd { background: #37474f; border: 1px solid #546e7a; border-radius: 3px; padding: 1px 6px; font-size: 0.9em; }
+.note { background: #1e3a5f; border-left: 4px solid #4fc3f7; padding: 12px 15px; border-radius: 0 6px 6px 0; margin: 15px 0; }
+.warning { background: #3e2723; border-left: 4px solid #ff7043; padding: 12px 15px; border-radius: 0 6px 6px 0; margin: 15px 0; }
+.toc { background: #16213e; border-radius: 8px; padding: 20px 25px; margin: 30px 0; }
+.toc h2 { margin-top: 0; border-left: none; padding-left: 0; }
+.toc ol { counter-reset: toc; list-style: none; margin: 0; }
+.toc ol li { counter-increment: toc; margin: 8px 0; }
+.toc ol li::before { content: counter(toc) ". "; color: #4fc3f7; font-weight: bold; }
+.toc a { color: #81d4fa; text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+th, td { border: 1px solid #37474f; padding: 10px 12px; text-align: left; }
+th { background: #1e3a5f; color: #4fc3f7; }
+tr:nth-child(even) { background: #1e1e36; }
+.screenshot { border: 1px solid #37474f; border-radius: 6px; max-width: 100%; margin: 15px 0; }
+.shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; margin: 15px 0; }
+.shortcut-grid kbd { font-family: monospace; }
+footer { text-align: center; margin-top: 60px; padding-top: 20px; border-top: 1px solid #37474f; color: #78909c; font-size: 0.9em; }
+@media print { body { color: #333; background: #fff; } h2 { color: #1565c0; } .toc, .note { background: #f5f5f5; } th { background: #e3f2fd; } td, th { border-color: #ccc; } tr:nth-child(even) { background: #fafafa; } code { background: #f5f5f5; } }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Manuel d'utilisation</h1>
+<p style="color:#90a4ae;font-size:1.1em">Gestion Morgue — Application de gestion des défunts et des opérations funéraires</p>
+
+<div class="toc">
+<h2>Sommaire</h2>
+<ol>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#connexion">Connexion et premier accès</a></li>
+<li><a href="#tableau-bord">Tableau de bord</a></li>
+<li><a href="#defunts">Gestion des défunts</a></li>
+<li><a href="#stockage">Gestion du stockage</a></li>
+<li><a href="#interventions">Gestion des interventions</a></li>
+<li><a href="#sorties">Autorisations de sortie</a></li>
+<li><a href="#familles">Contacts familiaux</a></li>
+<li><a href="#rapports">Rapports et statistiques</a></li>
+<li><a href="#journal">Journal d'audit</a></li>
+<li><a href="#utilisateurs">Gestion des utilisateurs</a></li>
+<li><a href="#pieces-jointes">Pièces jointes</a></li>
+<li><a href="#personnalisation">Personnalisation</a></li>
+<li><a href="#parametres">Paramètres</a></li>
+<li><a href="#impression">Impression</a></li>
+<li><a href="#mises-a-jour">Mises à jour</a></li>
+<li><a href="#raccourcis">Raccourcis clavier</a></li>
+</ol>
+</div>
+
+<h2 id="introduction">1. Introduction</h2>
+<p><strong>Gestion Morgue</strong> est une application de bureau conçue pour faciliter la gestion des défunts au sein d'une morgue ou d'un établissement funéraire. Elle permet de :</p>
+<ul>
+<li>Enregistrer et suivre les défunts accueillis</li>
+<li>Gérer les emplacements de stockage (tiroirs, chambres froides)</li>
+<li>Planifier et tracer les interventions (thanatopraxie, soins)</li>
+<li>Gérer les autorisations de sortie</li>
+<li>Suivre les contacts familiaux</li>
+<li>Générer des rapports et statistiques</li>
+<li>Assurer la traçabilité complète via un journal d'audit</li>
+</ul>
+
+<h2 id="connexion">2. Connexion et premier accès</h2>
+<h3>2.1 Écran de connexion</h3>
+<p>Lancez l'application. L'écran de connexion apparaît avec les champs :</p>
+<ul>
+<li><strong>Nom d'utilisateur</strong> — votre identifiant</li>
+<li><strong>Mot de passe</strong> — votre mot de passe confidentiel</li>
+</ul>
+
+<h3>2.2 Comptes par défaut</h3>
+<p>Lors de la première installation, quatre comptes sont créés automatiquement :</p>
+<table>
+<tr><th>Rôle</th><th>Identifiant</th><th>Mot de passe</th><th>Permissions</th></tr>
+<tr><td>Administrateur</td><td><code>admin</code></td><td><code>admin123</code></td><td>Toutes les fonctionnalités</td></tr>
+<tr><td>Médecin</td><td><code>medecin</code></td><td><code>medecin123</code></td><td>Défunts, stockage, interventions, sorties, rapports, familles</td></tr>
+<tr><td>Thanatopracteur</td><td><code>thanato</code></td><td><code>thanato123</code></td><td>Défunts, stockage, interventions, sorties</td></tr>
+<tr><td>Greffier</td><td><code>greffier</code></td><td><code>greffier123</code></td><td>Défunts, rapports, journal, familles</td></tr>
+</table>
+<div class="warning">Il est impératif de changer les mots de passe par défaut dès la première connexion.</div>
+
+<h2 id="tableau-bord">3. Tableau de bord</h2>
+<p>Après connexion, le tableau de bord affiche un résumé de l'activité :</p>
+<ul>
+<li><strong>Défunts enregistrés</strong> — nombre total de défunts</li>
+<li><strong>Emplacements occupés</strong> — taux d'occupation du stockage</li>
+<li><strong>Interventions en cours</strong> — interventions planifiées ou en cours</li>
+<li><strong>Sorties du jour</strong> — autorisations de sortie récentes</li>
+</ul>
+<p>Les données sont actualisées automatiquement toutes les 30 secondes.</p>
+
+<h2 id="defunts">4. Gestion des défunts</h2>
+<h3>4.1 Liste des défunts</h3>
+<p>La vue <strong>Défunts</strong> présente la liste complète des défunts enregistrés, avec les colonnes :</p>
+<ul>
+<li>N° de dossier</li>
+<li>Nom et prénom</li>
+<li>Date de naissance</li>
+<li>Date de décès</li>
+<li>Emplacement</li>
+<li>Statut</li>
+</ul>
+
+<h3>4.2 Recherche et filtres</h3>
+<ul>
+<li><strong>Recherche rapide</strong> — tapez un nom, un prénom ou un numéro de dossier dans le champ de recherche en haut</li>
+<li><strong>Filtres avancés</strong> — utilisez les filtres par date (période), statut, emplacement</li>
+<li><strong>Pagination</strong> — navigation par pages avec affichage du nombre de résultats</li>
+</ul>
+
+<h3>4.3 Ajouter un défunt</h3>
+<p>Cliquez sur <strong>Nouveau défunt</strong>. Remplissez les informations :</p>
+<ul>
+<li>Identité (nom, prénom, date de naissance, sexe)</li>
+<li>Informations sur le décès (date, lieu, cause)</li>
+<li>Attribution d'un emplacement de stockage</li>
+<li>Numéro de dossier (automatique ou manuel)</li>
+</ul>
+
+<h3>4.4 Modifier / Consulter</h3>
+<p>Double-cliquez sur un défunt dans la liste pour ouvrir la fiche détaillée. Vous pouvez :</p>
+<ul>
+<li>Modifier les informations</li>
+<li>Ajouter des pièces jointes</li>
+<li>Ajouter des contacts familiaux</li>
+<li>Consulter l'historique des interventions</li>
+<li>Imprimer la fiche</li>
+</ul>
+
+<h2 id="stockage">5. Gestion du stockage</h2>
+<h3>5.1 Vue d'ensemble</h3>
+<p>La vue <strong>Stockage</strong> affiche un plan des emplacements (tiroirs, chambres froides). Chaque emplacement est représenté par une carte indiquant :</p>
+<ul>
+<li>Le code (ex: A-01)</li>
+<li>L'état (libre / occupé)</li>
+<li>La température</li>
+<li>Le défunt occupant (si occupé)</li>
+</ul>
+
+<h3>5.2 Attribution</h3>
+<p>Lors de l'enregistrement d'un défunt, un emplacement libre peut lui être attribué. Les emplacements sont automatiquement marqués comme occupés.</p>
+
+<h3>5.3 Libération</h3>
+<p>Lors d'une sortie, l'emplacement est automatiquement libéré. Vous pouvez aussi libérer manuellement un emplacement depuis la vue Stockage.</p>
+
+<h2 id="interventions">6. Gestion des interventions</h2>
+<h3>6.1 Types d'interventions</h3>
+<ul>
+<li><strong>Soins de conservation</strong> — thanatopraxie</li>
+<li><strong>Toilette mortuaire</strong></li>
+<li><strong>Soins esthétiques</strong></li>
+<li><strong>Autopsie</strong></li>
+<li><strong>Autre</strong> — intervention personnalisée</li>
+</ul>
+
+<h3>6.2 Planification</h3>
+<p>Créez une intervention en sélectionnant :</p>
+<ul>
+<li>Le défunt concerné</li>
+<li>Le type d'intervention</li>
+<li>La date et l'heure prévues</li>
+<li>Le technicien responsable</li>
+<li>Les observations éventuelles</li>
+</ul>
+
+<h3>6.3 Suivi</h3>
+<p>Les interventions peuvent être marquées comme :</p>
+<ul>
+<li><strong>Planifiée</strong> — intervention à venir</li>
+<li><strong>En cours</strong> — intervention en réalisation</li>
+<li><strong>Terminée</strong> — intervention achevée</li>
+<li><strong>Annulée</strong> — intervention annulée</li>
+</ul>
+
+<h2 id="sorties">7. Autorisations de sortie</h2>
+<h3>7.1 Demande de sortie</h3>
+<p>Pour autoriser la sortie d'un défunt :</p>
+<ol>
+<li>Sélectionnez le défunt concerné</li>
+<li>Indiquez la destination (funérarium, cimetière, crématorium, etc.)</li>
+<li>Précisez la date et l'heure de sortie</li>
+<li>Ajoutez les observations nécessaires</li>
+<li>Validez l'autorisation</li>
+</ol>
+<p>L'autorisation est horodatée et signée électroniquement par l'utilisateur connecté.</p>
+
+<h3>7.2 Historique</h3>
+<p>Consultez l'ensemble des sorties avec filtres par date, défunt ou statut. Chaque sortie peut être imprimée.</p>
+
+<h2 id="familles">8. Contacts familiaux</h2>
+<p>Gérez les contacts des familles des défunts :</p>
+<ul>
+<li>Ajoutez un ou plusieurs contacts par défunt</li>
+<li>Informations : nom, prénom, lien de parenté, téléphone, email, adresse</li>
+<li>Modifiez ou supprimez les contacts existants</li>
+<li>Accès rapide depuis la fiche du défunt</li>
+</ul>
+
+<h2 id="rapports">9. Rapports et statistiques</h2>
+<h3>9.1 Rapports disponibles</h3>
+<ul>
+<li><strong>Rapport d'activité</strong> — synthèse des opérations sur une période</li>
+<li><strong>Statistiques mensuelles</strong> — nombre d'entrées, sorties, interventions</li>
+<li><strong>Taux d'occupation</strong> — utilisation des emplacements de stockage</li>
+</ul>
+
+<h3>9.2 Export</h3>
+<p>Les rapports peuvent être exportés au format PDF ou imprimés directement.</p>
+
+<h2 id="journal">10. Journal d'audit</h2>
+<p>Toutes les actions effectuées dans l'application sont enregistrées dans le journal d'audit :</p>
+<ul>
+<li>Connexions et déconnexions</li>
+<li>Création, modification et suppression de défunts</li>
+<li>Attribution d'emplacements</li>
+<li>Interventions (création, changement de statut)</li>
+<li>Autorisations de sortie</li>
+<li>Modifications des utilisateurs</li>
+</ul>
+<p>Le journal est horodaté et horodaté avec le nom de l'utilisateur et l'adresse IP.</p>
+
+<h2 id="utilisateurs">11. Gestion des utilisateurs</h2>
+<div class="note">Cette section est accessible uniquement aux administrateurs.</div>
+<h3>11.1 Créer un utilisateur</h3>
+<ul>
+<li>Nom d'utilisateur (unique)</li>
+<li>Nom complet</li>
+<li>Adresse email</li>
+<li>Rôle (ADMIN, MEDECIN, THANATOPRACTEUR, GREFFIER)</li>
+<li>Mot de passe temporaire</li>
+</ul>
+
+<h3>11.2 Modifier / Désactiver</h3>
+<ul>
+<li>Modification des informations et du rôle</li>
+<li>Désactivation d'un compte (sans le supprimer)</li>
+<li>Réinitialisation du mot de passe</li>
+</ul>
+
+<h2 id="pieces-jointes">12. Pièces jointes</h2>
+<p>Vous pouvez associer des fichiers aux dossiers des défunts :</p>
+<ul>
+<li><strong>Types supportés</strong> — documents PDF, images (JPG, PNG), feuilles de calcul</li>
+<li><strong>Signature numérique</strong> — les pièces jointes peuvent être signées numériquement (PKCS#12)</li>
+<li><strong>Stockage</strong> — les fichiers sont stockés dans <code>~/.gestionmorgue/attachments/</code></li>
+</ul>
+
+<h2 id="personnalisation">13. Personnalisation</h2>
+<h3>13.1 Thème</h3>
+<p>Basculez entre le thème clair et le thème sombre via le bouton <strong>Thème</strong> dans l'en-tête.</p>
+
+<h3>13.2 Créateur de thèmes</h3>
+<p>Personnalisez les couleurs de l'interface via <strong>Thème > Créateur de thème</strong> :</p>
+<ul>
+<li>Couleur principale (barre de navigation, boutons)</li>
+<li>Couleur secondaire (surbrillances, accents)</li>
+<li>Couleur de fond</li>
+<li>Aperçu en temps réel</li>
+</ul>
+
+<h3>13.3 Langue</h3>
+<p>Changez la langue de l'interface entre <strong>Français</strong> et <strong>Anglais</strong> via le bouton de langue dans l'en-tête.</p>
+
+<h2 id="parametres">14. Paramètres</h2>
+<p>La vue <strong>Paramètres</strong> permet de configurer :</p>
+<ul>
+<li><strong>Vérification des mises à jour</strong> — activer/désactiver la vérification automatique</li>
+<li><strong>Vérification SSL</strong> — activer/désactiver lors des appels API REST</li>
+<li><strong>Informations sur la base</strong> — type de base de données, URL de connexion</li>
+<li><strong>À propos</strong> — version de l'application, version de la base</li>
+</ul>
+
+<h2 id="impression">15. Impression</h2>
+<p>Depuis les vues <strong>Défunts</strong>, <strong>Stockage</strong> et <strong>Journal</strong>, cliquez sur le bouton <strong>Imprimer</strong> pour générer un document imprimable :</p>
+<ul>
+<li>Fiche défunt avec toutes les informations</li>
+<li>État des lieux de stockage</li>
+<li>Journal d'audit filtré</li>
+</ul>
+<p>L'impression utilise la boîte de dialogue système d'impression.</p>
+
+<h2 id="mises-a-jour">16. Mises à jour</h2>
+<h3>16.1 Vérification automatique</h3>
+<p>Au démarrage de l'application, une vérification de mise à jour est effectuée automatiquement. Si une nouvelle version est disponible, une notification s'affiche.</p>
+
+<h3>16.2 Vérification manuelle</h3>
+<p>Cliquez sur le bouton <strong>Mise à jour</strong> dans l'en-tête pour vérifier manuellement.</p>
+
+<h3>16.3 Installation</h3>
+<ol>
+<li>Si une mise à jour est disponible, cliquez sur <strong>Télécharger</strong></li>
+<li>La progression du téléchargement est affichée</li>
+<li>Une fois téléchargée, l'application se ferme et s'installe automatiquement</li>
+<li>L'application redémarre avec la nouvelle version</li>
+</ol>
+
+<h2 id="raccourcis">17. Raccourcis clavier</h2>
+<div class="shortcut-grid">
+<kbd>Entrée</kbd> <span>Recherche rapide (depuis le champ de recherche)</span>
+<kbd>Ctrl+F</kbd> <span>Focus sur la recherche</span>
+<kbd>Échap</kbd> <span>Fermer la fenêtre modale / annuler</span>
+</div>
+
+<footer>
+<p>Gestion Morgue v1.0.0 &mdash; Manuel utilisateur</p>
+<p>&copy; 2026 &mdash; Application sous licence MIT</p>
+</footer>
+</div>
+</body>
+</html>

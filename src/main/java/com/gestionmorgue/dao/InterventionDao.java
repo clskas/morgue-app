@@ -17,23 +17,20 @@ public class InterventionDao extends GenericDao<Intervention> {
 
     public List<Intervention> findPending() {
         try (Session session = DatabaseManager.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Intervention> query = cb.createQuery(Intervention.class);
-            Root<Intervention> root = query.from(Intervention.class);
-            query.select(root).where(cb.equal(root.get("status"), "PLANIFIEE"));
-            query.orderBy(cb.asc(root.get("scheduledAt")));
-            return session.createQuery(query).list();
+            return session.createQuery(
+                    "select i from Intervention i left join fetch i.deceased left join fetch i.performer where i.status = 'PLANIFIEE' order by i.scheduledAt asc",
+                    Intervention.class).list();
         }
     }
 
     public List<Intervention> findByDateRange(LocalDateTime start, LocalDateTime end) {
         try (Session session = DatabaseManager.getSessionFactory().openSession()) {
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Intervention> query = cb.createQuery(Intervention.class);
-            Root<Intervention> root = query.from(Intervention.class);
-            query.select(root).where(cb.between(root.get("scheduledAt"), start, end));
-            query.orderBy(cb.asc(root.get("scheduledAt")));
-            return session.createQuery(query).list();
+            return session.createQuery(
+                    "select i from Intervention i left join fetch i.deceased left join fetch i.performer where i.scheduledAt between :start and :end order by i.scheduledAt asc",
+                    Intervention.class)
+                    .setParameter("start", start)
+                    .setParameter("end", end)
+                    .list();
         }
     }
 
@@ -55,11 +52,9 @@ public class InterventionDao extends GenericDao<Intervention> {
             countQ.select(cb.count(countRoot)).where(cb.equal(countRoot.get("status"), "PLANIFIEE"));
             long total = session.createQuery(countQ).getSingleResult();
 
-            CriteriaQuery<Intervention> query = cb.createQuery(Intervention.class);
-            Root<Intervention> root = query.from(Intervention.class);
-            query.select(root).where(cb.equal(root.get("status"), "PLANIFIEE"));
-            query.orderBy(cb.asc(root.get("scheduledAt")));
-            List<Intervention> results = session.createQuery(query)
+            List<Intervention> results = session.createQuery(
+                    "select distinct i from Intervention i left join fetch i.deceased left join fetch i.performer where i.status = 'PLANIFIEE' order by i.scheduledAt asc",
+                    Intervention.class)
                     .setFirstResult(page * pageSize)
                     .setMaxResults(pageSize)
                     .list();

@@ -13,6 +13,7 @@
         <Region HBox.hgrow="ALWAYS" />
         <Label fx:id="logCountLabel" styleClass="header-role" />
         <Button onAction="#handleExportCsv" styleClass="header-button" text="Export CSV" />
+        <Button onAction="#handlePrint" styleClass="header-button" text="Imprimer" />
         <Button onAction="#handleRefresh" styleClass="header-button" text="Rafraîchir" />
     </HBox>
 

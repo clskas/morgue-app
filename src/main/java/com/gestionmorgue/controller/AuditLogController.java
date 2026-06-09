@@ -13,6 +13,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javafx.print.PrinterJob;
+import javafx.scene.layout.VBox;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -144,6 +147,28 @@ public class AuditLogController {
         } catch (Exception e) {
             NotificationUtil.showError(I18nUtil.t("error.title"), e.getMessage());
         }
+    }
+
+    @FXML
+    private void handlePrint() {
+        var items = logTable.getItems();
+        if (items.isEmpty()) { NotificationUtil.showWarning(I18nUtil.t("warning.title"), "Aucune entrée à imprimer"); return; }
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job == null) { NotificationUtil.showWarning(I18nUtil.t("warning.title"), I18nUtil.t("reports.noprinter")); return; }
+        if (!job.showPrintDialog(logTable.getScene().getWindow())) return;
+        VBox printNode = new VBox(4);
+        printNode.setStyle("-fx-padding: 20; -fx-font-family: 'Segoe UI'; -fx-font-size: 10;");
+        Label title = new Label(I18nUtil.t("audit.title"));
+        title.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #1a237e;");
+        printNode.getChildren().add(title);
+        for (var log : items) {
+            String user = log.getUser() != null ? log.getUser().getUsername() : "?";
+            String details = log.getDetails() != null ? log.getDetails().replace("\n", " ") : "";
+            Label l = new Label("[" + log.getTimestamp() + "] " + user + " - " + log.getAction() + (details.isEmpty() ? "" : " : " + details));
+            l.setStyle("-fx-padding: 1 0;");
+            printNode.getChildren().add(l);
+        }
+        if (job.printPage(printNode)) job.endJob();
     }
 
     private void loadNextPage() {

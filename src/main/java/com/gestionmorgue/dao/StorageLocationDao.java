@@ -66,7 +66,7 @@ public class StorageLocationDao extends GenericDao<StorageLocation> {
             }
 
             List<StorageLocation> results = session.createQuery(
-                    "select distinct l from StorageLocation l left join fetch l.assignments a where a.releasedAt is null and l.id in :ids",
+                    "select distinct l from StorageLocation l left join fetch l.assignments a left join fetch a.deceased where a.releasedAt is null and l.id in :ids",
                     StorageLocation.class)
                     .setParameter("ids", ids)
                     .list();

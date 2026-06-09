@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.WebView?>
+
+<VBox spacing="15" styleClass="module-view" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestionmorgue.controller.ManualController">
+    <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Text styleClass="content-title" text="Manuel d'utilisation" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button onAction="#handlePrint" text="Imprimer" />
+    </HBox>
+
+    <WebView fx:id="webView" VBox.vgrow="ALWAYS" />
+</VBox>

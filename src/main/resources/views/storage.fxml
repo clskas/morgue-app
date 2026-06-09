@@ -48,6 +48,7 @@
         <VBox spacing="5" alignment="TOP_CENTER">
             <Button fx:id="releaseButton" onAction="#handleRelease" styleClass="btn-danger" text="Libérer" />
             <Button fx:id="labelsButton" onAction="#handlePrintLabels" text="Étiquettes" />
+            <Button onAction="#handlePrint" text="Imprimer" />
         </VBox>
     </HBox>
 

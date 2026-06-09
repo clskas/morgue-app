@@ -24,10 +24,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +60,7 @@ public class DashboardController {
     @FXML private VBox recentActivity;
     @FXML private VBox chartContainer;
     @FXML private VBox pieChartContainer;
+    @FXML private ProgressIndicator contentProgress;
     @FXML private TextField searchField;
     @FXML private Button themeButton;
     @FXML private Button themeCreatorButton;
@@ -68,6 +73,7 @@ public class DashboardController {
     @FXML private Button navUsers;
     @FXML private Button navFamily;
     @FXML private Button navTheme;
+    @FXML private Button navManual;
     @FXML private Button navSettings;
 
     private ReportService reportService;
@@ -85,6 +91,12 @@ public class DashboardController {
         loadDashboardData();
         buildChart();
         buildPieChart();
+        Platform.runLater(() -> {
+            FadeTransition ft = new FadeTransition(Duration.millis(400), mainContent);
+            ft.setFromValue(0.0);
+            ft.setToValue(1.0);
+            ft.play();
+        });
         searchField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) handleQuickSearch();
         });
@@ -111,10 +123,11 @@ public class DashboardController {
                                 Parent root = loader.load();
                                 Stage stage = new Stage();
                                 stage.setTitle(I18nUtil.t("action.update") + " - " + Constants.APP_NAME);
-                                Scene updateScene = new Scene(root, 540, 480);
-                                App.applyTheme(updateScene);
-                                stage.setScene(updateScene);
-                                stage.show();
+                Scene updateScene = new Scene(root, 540, 480);
+                App.applyTheme(updateScene);
+                App.setStageIcon(stage);
+                stage.setScene(updateScene);
+                stage.show();
                             } catch (Exception e) {
                                 NotificationUtil.showError(I18nUtil.t("error.title"), e.getMessage());
                             }
@@ -149,6 +162,8 @@ public class DashboardController {
         navTheme.setManaged(navTheme.isVisible());
         navSettings.setVisible("ADMIN".equals(role));
         navSettings.setManaged(navSettings.isVisible());
+        navManual.setVisible(true);
+        navManual.setManaged(true);
         themeCreatorButton.setVisible("ADMIN".equals(role));
         themeCreatorButton.setManaged(themeCreatorButton.isVisible());
     }
@@ -171,6 +186,11 @@ public class DashboardController {
     @FXML
     private void handleThemeCreator() {
         loadView("/views/theme.fxml");
+    }
+
+    @FXML
+    private void handleManual() {
+        loadView("/views/manual.fxml");
     }
 
     @FXML
@@ -382,12 +402,25 @@ public class DashboardController {
     }
 
     private void loadView(String fxmlPath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent view = loader.load();
-            mainContent.getChildren().setAll(view);
-        } catch (Exception e) {
-            NotificationUtil.showError(I18nUtil.t("error.title"), I18nUtil.t("dashboard.error.loadView") + ": " + e.getMessage());
-        }
+        contentProgress.setVisible(true);
+        new Thread(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                Parent view = loader.load();
+                Platform.runLater(() -> {
+                    mainContent.getChildren().setAll(view);
+                    contentProgress.setVisible(false);
+                    FadeTransition ft = new FadeTransition(Duration.millis(250), mainContent);
+                    ft.setFromValue(0.6);
+                    ft.setToValue(1.0);
+                    ft.play();
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    contentProgress.setVisible(false);
+                    NotificationUtil.showError(I18nUtil.t("error.title"), I18nUtil.t("dashboard.error.loadView") + ": " + e.getMessage());
+                });
+            }
+        }).start();
     }
 }

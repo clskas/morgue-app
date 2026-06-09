@@ -89,9 +89,10 @@ public class LoginController {
             Scene scene = new Scene(root, 1200, 800);
             App.applyTheme(scene);
             Stage stage = (Stage) usernameField.getScene().getWindow();
+            App.setStageIcon(stage);
             stage.setScene(scene);
             stage.setTitle(Constants.APP_NAME + " - " + I18nUtil.t("dashboard.title"));
-            stage.centerOnScreen();
+            stage.setMaximized(true);
         } catch (Exception e) {
             NotificationUtil.showError(I18nUtil.t("error.title"), I18nUtil.t("login.error.dashboard") + ": " + e.getMessage());
         }

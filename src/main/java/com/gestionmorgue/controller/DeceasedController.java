@@ -10,18 +10,25 @@ import com.gestionmorgue.util.SecurityUtil;
 import com.gestionmorgue.util.ValidationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
+
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DeceasedController {
     private static final Logger log = LoggerFactory.getLogger(DeceasedController.class);
@@ -48,6 +55,7 @@ public class DeceasedController {
     @FXML private ComboBox<String> genderCombo;
     @FXML private TextArea observationsArea;
     @FXML private Label resultCountLabel;
+    @FXML private ProgressIndicator progressIndicator;
     @FXML private Button btnExportPdf;
 
     @FXML private ListView<Attachment> attachmentList;
@@ -65,6 +73,7 @@ public class DeceasedController {
     private ObservableList<Attachment> attachmentData;
     private Deceased selectedDeceased;
     private static final int PAGE_SIZE = 25;
+    private Timer searchDebounce;
 
     @FXML
     public void initialize() {
@@ -158,7 +167,24 @@ public class DeceasedController {
             }
         });
 
+        searchField.textProperty().addListener((o, old, val) -> scheduleSearch());
+        searchDossierField.textProperty().addListener((o, old, val) -> scheduleSearch());
+        searchGenderCombo.valueProperty().addListener((o, old, val) -> scheduleSearch());
+        searchDateFrom.valueProperty().addListener((o, old, val) -> scheduleSearch());
+        searchDateTo.valueProperty().addListener((o, old, val) -> scheduleSearch());
+
         loadPage(0);
+    }
+
+    private void scheduleSearch() {
+        if (searchDebounce != null) searchDebounce.cancel();
+        searchDebounce = new Timer();
+        searchDebounce.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> handleSearch());
+            }
+        }, 300);
     }
 
     @FXML
@@ -172,21 +198,27 @@ public class DeceasedController {
             return;
         }
 
-        var results = deceasedService.search(query, null, dossier.isEmpty() ? null : dossier);
-        if (gender != null && !gender.isEmpty()) {
-            results = results.stream().filter(d -> gender.equals(d.getGender())).toList();
-        }
-        if (searchDateFrom.getValue() != null) {
-            results = results.stream().filter(d -> d.getDeathDate() != null
-                    && !d.getDeathDate().isBefore(searchDateFrom.getValue())).toList();
-        }
-        if (searchDateTo.getValue() != null) {
-            results = results.stream().filter(d -> d.getDeathDate() != null
-                    && !d.getDeathDate().isAfter(searchDateTo.getValue())).toList();
-        }
-        deceasedList.setAll(results);
-        resultCountLabel.setText(I18nUtil.t("deceased.list.results", results.size()));
-        pagination.setVisible(false);
+        var dateFrom = searchDateFrom.getValue();
+        var dateTo = searchDateTo.getValue();
+        progressIndicator.setVisible(true);
+        new Thread(() -> {
+            try {
+                var results = deceasedService.searchByQuery(
+                        query, dossier.isEmpty() ? null : dossier, dateFrom, dateTo);
+                if (gender != null && !gender.isEmpty()) {
+                    results = results.stream().filter(d -> gender.equals(d.getGender())).toList();
+                }
+                final var finalResults = results;
+                Platform.runLater(() -> {
+                    deceasedList.setAll(finalResults);
+                    resultCountLabel.setText(I18nUtil.t("deceased.list.results", finalResults.size()));
+                    pagination.setVisible(false);
+                    progressIndicator.setVisible(false);
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> progressIndicator.setVisible(false));
+            }
+        }).start();
     }
 
     @FXML
@@ -210,11 +242,13 @@ public class DeceasedController {
         nirField.setStyle(null);
 
         ValidationUtil.ValidationResult validation = new ValidationUtil.ValidationResult();
-        if (!ValidationUtil.isNotEmpty(lastNameField.getText())) {
+        String lastName = nvl(lastNameField.getText());
+        String firstName = nvl(firstNameField.getText());
+        if (!ValidationUtil.isNotEmpty(lastName)) {
             lastNameField.setStyle("-fx-border-color: #c62828;");
             validation.addError(I18nUtil.t("deceased.validation.name"));
         }
-        if (!ValidationUtil.isNotEmpty(firstNameField.getText())) {
+        if (!ValidationUtil.isNotEmpty(firstName)) {
             firstNameField.setStyle("-fx-border-color: #c62828;");
             validation.addError(I18nUtil.t("deceased.validation.firstname"));
         }
@@ -222,7 +256,7 @@ public class DeceasedController {
                 && deathDatePicker.getValue().isBefore(birthDatePicker.getValue())) {
             validation.addError(I18nUtil.t("deceased.validation.deathdate"));
         }
-        String nir = nirField.getText().trim();
+        String nir = nvl(nirField.getText());
         if (!nir.isEmpty() && !ValidationUtil.isValidNir(nir)) {
             nirField.setStyle("-fx-border-color: #c62828;");
             validation.addError(I18nUtil.t("deceased.validation.nir"));
@@ -237,20 +271,20 @@ public class DeceasedController {
 
             if (selectedDeceased == null) {
                 Deceased d = deceasedService.createDeceased(
-                        lastNameField.getText().trim(), firstNameField.getText().trim(),
-                        birthDate, deathDate, placeOfDeathField.getText().trim(), genderCombo.getValue());
+                        nvl(lastNameField.getText()), nvl(firstNameField.getText()),
+                        birthDate, deathDate, nvl(placeOfDeathField.getText()), genderCombo.getValue());
                 d.setNir(nir.isEmpty() ? null : nir);
                 deceasedService.update(d);
                 NotificationUtil.showInfo(I18nUtil.t("info.title"), I18nUtil.t("deceased.save.success"));
             } else {
-                selectedDeceased.setLastName(lastNameField.getText().trim().toUpperCase());
-                selectedDeceased.setFirstName(firstNameField.getText().trim());
+                selectedDeceased.setLastName(lastName.toUpperCase());
+                selectedDeceased.setFirstName(firstName);
                 selectedDeceased.setNir(nir.isEmpty() ? null : nir);
                 selectedDeceased.setBirthDate(birthDatePicker.getValue());
                 selectedDeceased.setDeathDate(deathDatePicker.getValue());
-                selectedDeceased.setPlaceOfDeath(placeOfDeathField.getText().trim());
+                selectedDeceased.setPlaceOfDeath(nvl(placeOfDeathField.getText()));
                 selectedDeceased.setGender(genderCombo.getValue());
-                selectedDeceased.setObservations(observationsArea.getText());
+                selectedDeceased.setObservations(nvl(observationsArea.getText()));
                 deceasedService.update(selectedDeceased);
                 NotificationUtil.showInfo(I18nUtil.t("info.title"), I18nUtil.t("deceased.update.success"));
             }
@@ -333,6 +367,36 @@ public class DeceasedController {
     }
 
     @FXML
+    private void handlePrint() {
+        try { SecurityUtil.requireRole("ADMIN", "MEDECIN", "THANATOPRACTEUR"); } catch (SecurityException e) { NotificationUtil.showWarning(I18nUtil.t("access.denied"), e.getMessage()); return; }
+        Deceased d = deceasedTable.getSelectionModel().getSelectedItem();
+        if (d == null) { NotificationUtil.showWarning(I18nUtil.t("warning.title"), I18nUtil.t("deceased.export.pdf.no.selection")); return; }
+        javafx.print.PrinterJob job = javafx.print.PrinterJob.createPrinterJob();
+        if (job == null) { NotificationUtil.showWarning(I18nUtil.t("warning.title"), I18nUtil.t("reports.noprinter")); return; }
+        if (!job.showPrintDialog(deceasedTable.getScene().getWindow())) return;
+        VBox printNode = new VBox(8);
+        printNode.setStyle("-fx-padding: 20; -fx-font-family: 'Segoe UI'; -fx-font-size: 12;");
+        Label title = new Label(I18nUtil.t("deceased.export.pdf"));
+        title.setStyle("-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #1a237e;");
+        VBox details = new VBox(4);
+        details.setStyle("-fx-padding: 10 0;");
+        details.getChildren().addAll(
+            new Label(I18nUtil.t("deceased.field.dossier") + " : " + nvl(d.getDossierNumber())),
+            new Label(I18nUtil.t("deceased.field.lastname") + " : " + nvl(d.getLastName())),
+            new Label(I18nUtil.t("deceased.field.firstname") + " : " + nvl(d.getFirstName())),
+            new Label(I18nUtil.t("deceased.field.nir") + " : " + nvl(d.getNir())),
+            new Label(I18nUtil.t("deceased.field.birthdate") + " : " + (d.getBirthDate() != null ? d.getBirthDate().toString() : "")),
+            new Label(I18nUtil.t("deceased.field.deathdate") + " : " + (d.getDeathDate() != null ? d.getDeathDate().toString() : "")),
+            new Label(I18nUtil.t("deceased.field.gender") + " : " + nvl(d.getGender())),
+            new Label(I18nUtil.t("deceased.field.placeofdeath") + " : " + nvl(d.getPlaceOfDeath())),
+            new Label(I18nUtil.t("deceased.field.causeofdeath") + " : " + nvl(d.getCauseOfDeath())),
+            new Label(I18nUtil.t("deceased.field.observations") + " : " + nvl(d.getObservations()))
+        );
+        printNode.getChildren().addAll(title, details);
+        if (job.printPage(printNode)) job.endJob();
+    }
+
+    @FXML
     private void handleAddAttachment() {
         if (selectedDeceased == null || selectedDeceased.getId() == null) {
             NotificationUtil.showWarning(I18nUtil.t("warning.title"), I18nUtil.t("attachment.no.selection"));
@@ -408,6 +472,10 @@ public class DeceasedController {
         handleSearch();
     }
 
+    private static String nvl(String s) {
+        return s != null ? s.trim() : "";
+    }
+
     private boolean searchActive() {
         return !searchField.getText().trim().isEmpty()
                 || !searchDossierField.getText().trim().isEmpty()
@@ -415,10 +483,24 @@ public class DeceasedController {
     }
 
     private void loadPage(int page) {
-        var result = new com.gestionmorgue.dao.GenericDao<>(Deceased.class).findPaginated(page, PAGE_SIZE);
-        deceasedList.setAll(result.getResults());
-        pagination.setPageCount(Math.max(result.getTotalPages(), 1));
-        pagination.setCurrentPageIndex(Math.min(page, result.getTotalPages() - 1));
-        resultCountLabel.setText(I18nUtil.t("deceased.list.count", result.getTotalCount(), page + 1, result.getTotalPages()));
+        progressIndicator.setVisible(true);
+        new Thread(() -> {
+            try {
+                var result = new com.gestionmorgue.dao.GenericDao<>(Deceased.class).findPaginated(page, PAGE_SIZE);
+                Platform.runLater(() -> {
+                    deceasedList.setAll(result.getResults());
+                    pagination.setPageCount(Math.max(result.getTotalPages(), 1));
+                    pagination.setCurrentPageIndex(Math.min(page, result.getTotalPages() - 1));
+                    resultCountLabel.setText(I18nUtil.t("deceased.list.count", result.getTotalCount(), page + 1, result.getTotalPages()));
+                    progressIndicator.setVisible(false);
+                    FadeTransition ft = new FadeTransition(Duration.millis(300), deceasedTable);
+                    ft.setFromValue(0.7);
+                    ft.setToValue(1.0);
+                    ft.play();
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> progressIndicator.setVisible(false));
+            }
+        }).start();
     }
 }

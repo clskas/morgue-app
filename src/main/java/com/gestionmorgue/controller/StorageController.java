@@ -29,6 +29,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javafx.print.PrinterJob;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
 public class StorageController {
     private static final Logger log = LoggerFactory.getLogger(StorageController.class);
 
@@ -230,6 +234,28 @@ public class StorageController {
         } catch (Exception e) {
             NotificationUtil.showError(I18nUtil.t("error.title"), e.getMessage());
         }
+    }
+
+    @FXML
+    private void handlePrint() {
+        try { SecurityUtil.requireRole("ADMIN", "MEDECIN", "THANATOPRACTEUR"); } catch (SecurityException e) { NotificationUtil.showWarning(I18nUtil.t("access.denied"), e.getMessage()); return; }
+        var items = locationTable.getItems();
+        if (items.isEmpty()) { NotificationUtil.showWarning(I18nUtil.t("warning.title"), "Aucun emplacement à imprimer"); return; }
+        PrinterJob job = PrinterJob.createPrinterJob();
+        if (job == null) { NotificationUtil.showWarning(I18nUtil.t("warning.title"), I18nUtil.t("reports.noprinter")); return; }
+        if (!job.showPrintDialog(locationTable.getScene().getWindow())) return;
+        VBox printNode = new VBox(6);
+        printNode.setStyle("-fx-padding: 20; -fx-font-family: 'Segoe UI'; -fx-font-size: 11;");
+        Label title = new Label("Emplacements de stockage");
+        title.setStyle("-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #1a237e;");
+        printNode.getChildren().add(title);
+        for (var loc : items) {
+            String status = loc.isOccupied() ? "Occupé" : "Libre";
+            Label l = new Label(loc.getCode() + " - " + loc.getLabel() + " (" + loc.getZone() + ") [" + status + "]");
+            l.setStyle("-fx-padding: 2 0;");
+            printNode.getChildren().add(l);
+        }
+        if (job.printPage(printNode)) job.endJob();
     }
 
     @FXML
